@@ -17,13 +17,15 @@ RUN cmake /SLiM \
 RUN ln -s /build/slim /usr/bin/slim
 WORKDIR /
 
-RUN apt-get install -y python-dev
+# install python3.x
+RUN apt-get install -y python3
 WORKDIR /
 
+# add descartes script to container directory
 ADD descartes /scripts
 WORKDIR /scripts
 
-CMD ["slim"]
+CMD ["python"]
 
 # meta 
 LABEL version="0.1"
