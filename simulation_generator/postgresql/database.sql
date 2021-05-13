@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS sim_files (
+    id SERIAL NOT NULL PRIMARY KEY,
+    run_file BYTEA
+);
