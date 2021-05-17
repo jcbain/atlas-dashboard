@@ -1,9 +1,21 @@
 FROM ubuntu
 
 RUN apt-get update -y
+
 # install packages
 RUN apt-get install -y \
-    wget make cmake gcc g++ unzip
+    wget \
+    python3 \
+    make \
+    cmake \
+    gcc \
+    g++ \
+    unzip \
+    sudo \
+    systemd \
+    dos2unix \
+    munge \
+    slurm-wlm
 
 # retrieve and install slim
 RUN wget http://benhaller.com/slim/SLiM.zip
@@ -17,17 +29,18 @@ RUN cmake /SLiM \
 RUN ln -s /build/slim /usr/bin/slim
 WORKDIR /
 
-# install python3.x
-RUN apt-get install -y python3
-WORKDIR /
-
-# add descartes script to container directory
+# add slum.conf and descartes script to container directory
+ADD slurm.conf /etc/slurm-llnl
 ADD descartes /scripts
 WORKDIR /scripts
 
-CMD ["python"]
+# convert batch_jobs.sh dos format to unix
+RUN dos2unix batch_jobs.sh
 
-# meta 
+# @TODO: Baseimage-docker so ./start.sh is run on start
+CMD ["/bin/sh"]
+
+# meta
 LABEL version="0.1"
 LABEL maintainer="James Bain"
 LABEL email="jamescbain@gmail.com"
