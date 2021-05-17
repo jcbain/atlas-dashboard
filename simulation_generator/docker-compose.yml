@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:13.2-alpine
+    restart: always
+    environment: 
+      - POSTGRES_DB=atlas_simulation
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  pgdata:
+
+
+
+
+
+
