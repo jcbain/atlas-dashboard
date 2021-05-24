@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  db:
+    build: ./database/
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data postgres
+    
+  app :
+    build: app/
+    restart: on-failure
+    hostname: slurm_host
+    depends_on: 
+      - db   
+volumes:
+  pgdata:
+
