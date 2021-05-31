@@ -9,7 +9,7 @@ services:
       - ./pgdata:/var/lib/postgresql/data postgres
     
   app :
-    build: app/
+    build: ./simulation-app/
     restart: on-failure
     hostname: slurm_host
     depends_on: 
