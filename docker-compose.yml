@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  app:  
+    build: app
+    stdin_open: true
+    ports:
+      - 3000:3000
+
+  server:
+    build: server
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    volumes:
+      - uploads:/usr/src/uploads
+
+  db:
+    build: database/
+    restart: always
+    environment: 
+      - POSTGRES_DB=atlas_simulation
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - uploads:/usr/src/uploads
+      - ./pgdata:/var/lib/postgresql/data postgres
+  
+  descartes:
+    build: generator
+    restart: on-failure
+    hostname: slurm_host
+    volumes:
+      - uploads:/usr/src/uploads
+    depends_on: 
+      - db
+
+volumes:
+  uploads:
+  pgdata:
