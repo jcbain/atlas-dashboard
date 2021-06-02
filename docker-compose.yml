@@ -1,12 +1,12 @@
 version: "3.9"
 services:
   db:
-    build: ./simulation_generator/database/
+    build: ./database
     restart: always
     ports:
       - 5432:5432
     volumes:
-      - ./simulation_generator/pgdata:/var/lib/postgresql/data postgres
+      - ./database/pgdata:/var/lib/postgresql/data postgres
     
   app :
     build: ./simulation_generator/simulation-app/
