@@ -1,11 +1,16 @@
 FROM ubuntu
 
-RUN apt-get update -y
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update -y --fix-missing
+RUN apt-get upgrade -y 
 
 # install packages
 RUN apt-get install -y \
     wget \
     python3 \
+    libpq-dev \
+    python3-pip \
     make \
     cmake \
     gcc \
@@ -16,6 +21,9 @@ RUN apt-get install -y \
     dos2unix \
     munge \
     slurm-wlm
+
+RUN pip3 install sqlalchemy
+RUN pip install psycopg2
 
 # retrieve and install slim
 RUN wget http://benhaller.com/slim/SLiM.zip
@@ -31,14 +39,16 @@ WORKDIR /
 
 # add slum.conf and descartes script to container directory
 ADD slurm.conf /etc/slurm-llnl
-ADD descartes /scripts
-WORKDIR /scripts
+ADD descartes /usr/src
+WORKDIR /usr/src
+
+# RUN python3 -u app.py
 
 # convert batch_jobs.sh dos format to unix
 RUN dos2unix batch_jobs.sh
 
 # @TODO: Baseimage-docker so ./start.sh is run on start
-CMD ["/bin/sh"]
+CMD ["/bin/sh", "./start.sh"]
 
 # meta
 LABEL version="0.1"

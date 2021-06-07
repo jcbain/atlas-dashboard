@@ -6,9 +6,18 @@ import random
 
 from time import gmtime, strftime
 from helpers import output_manipulators, file_cleaners
+from sqlalchemy import create_engine
+
+db_name = 'atlas_simulation'
+db_user = 'postgres'
+db_pass = 'postgres'
+db_host = 'db'
+db_port = '5432'
+
+db_string = 'postgresql://{}:{}@{}:{}/{}'.format(db_user, db_pass, db_host, db_port, db_name)
+db = create_engine(db_string)
 
 def run_slim_process():
-
     cwd = os.getcwd() + '/'
     output_dir = cwd + 'run' + strftime("%Y%m%d_%H%M%S", gmtime()) + '_' + str(random.randint(1, 1000)) + '/'
     os.mkdir(output_dir)
@@ -59,11 +68,13 @@ def run_slim_process():
         else:
             full.extend(data)
 
+
     file_output = "\n".join(full)
     with open(output_dir + file_name, "w") as f:
         f.write(file_output)
+        # print(file_output)
 
-
+    db.execute("INSERT INTO output_files (run_file) VALUES(%s)", output_dir + file_name)
 
 if __name__ == "__main__":
     run_slim_process()
