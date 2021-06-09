@@ -2,11 +2,14 @@ FROM node:16-slim
 
 WORKDIR /usr/src/app
 
-COPY . .
+COPY package.json /usr/src/app
 
 RUN yarn install
 
+COPY . /usr/src/app
+
 EXPOSE 3000
+
 CMD ["yarn", "start"]
 
 # To start: docker run -it -p 3000:3000 frontend
