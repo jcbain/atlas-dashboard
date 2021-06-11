@@ -6,12 +6,13 @@ var FormData = require('form-data')
 var Axios = require('axios')
 
 export default function FileUpload() {
+  const [invalidFile, setInvalidFile] = useState(false);
 	const [files, setFiles] = useState({
 		'slimFile':'',
 		'jobsFile':'',
 		'dataFile':''
 	})
-
+	
 	const onSubmit = async e => {
 		e.preventDefault();
 		const formData = new FormData();
@@ -33,6 +34,42 @@ export default function FileUpload() {
 		}
 	}
 
+
+	const slimValidateFile = (e) => {
+		let validExt = /(\.slim)$/i;
+		let filename = e.target.files[0].name
+		if (!validExt.exec(filename)) {
+			alert("File needs to be .slim")
+			setInvalidFile(false)
+		} else {
+			setFiles({...files, slimFile: e.target.files[0]})
+		}
+	}
+
+	const jobsValidateFile = (e) => {
+		let validExt = /(\.txt)$/i;
+		let filename = e.target.files[0].name
+		if (!validExt.exec(filename)) {
+			alert("File needs to be .txt")
+			setInvalidFile(false)
+		} else {
+			setFiles({...files, jobsFile: e.target.files[0]})
+			setInvalidFile(true)
+		}
+	}
+
+	const dataValidateFile = (e) => {
+		let validExt = /(\.csv)$/i;
+		let filename = e.target.files[0].name
+		if (!validExt.exec(filename)) {
+			alert("File needs to be .csv")
+			setInvalidFile(false)
+		} else {
+			setFiles({...files, dataFile: e.target.files[0]})
+			setInvalidFile(true)
+		}
+	}
+
 	return (
 		<form onSubmit={onSubmit}>
 			<Accordion>
@@ -45,10 +82,10 @@ export default function FileUpload() {
 					<Accordion.Collapse eventKey="0">
 						<Card.Body>
 							<label className="font-weight-bold">Slim script</label>
-							<input type="file" className="form-control-file" onChange={event => {setFiles({...files, slimFile: event.target.files[0]})}}/>
+							<input type="file" className="form-control-file" accept=".slim" onChange={slimValidateFile}/>
 
 							<label className="font-weight-bold mt-3" htmlFor="jobsFile">Parameters file</label>
-							<input type="file" className="form-control-file" onChange={event => {setFiles({...files, jobsFile: event.target.files[0]})}}/>
+							<input type="file" className="form-control-file" accept=".txt" onChange={jobsValidateFile}/>
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
@@ -62,13 +99,12 @@ export default function FileUpload() {
 					<Accordion.Collapse eventKey="1">
 						<Card.Body>
 							<label className="font-weight-bold">Data</label>
-							<input type="file" className="form-control-file" onChange={event => {setFiles({...files, dataFile: event.target.files[0]})}}/>
+							<input type="file" className="form-control-file" accept=".csv" onChange={dataValidateFile}/>
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
 			</Accordion>
 			
-			<input className="button mt-3 mr-3" type="submit" value="Upload"/>
+			<input className="button mt-3 mr-3" type="submit" value="Upload" disabled={!invalidFile}/>
 		</form>
 	)
-}
