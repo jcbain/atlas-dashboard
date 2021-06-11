@@ -42,7 +42,6 @@ export default function FileUpload() {
 			setInvalidFile(false)
 		} else {
 			setFiles({...files, slimFile: e.target.files[0]})
-			setInvalidFile(true)
 		}
 	}
 
