@@ -6,13 +6,13 @@ var FormData = require('form-data')
 var Axios = require('axios')
 
 export default function FileUpload() {
+  const [invalidFile, setInvalidFile] = useState(false);
 	const [files, setFiles] = useState({
 		'slimFile':'',
 		'jobsFile':'',
 		'dataFile':''
 	})
-	const [invalidFile, setInvalidFile] = useState(false);
-
+	
 	const onSubmit = async e => {
 		e.preventDefault();
 		const formData = new FormData();
@@ -33,6 +33,7 @@ export default function FileUpload() {
 			}
 		}
 	}
+
 
 	const slimValidateFile = (e) => {
 		let validExt = /(\.slim)$/i;
@@ -107,4 +108,3 @@ export default function FileUpload() {
 			<input className="button mt-3 mr-3" type="submit" value="Upload" disabled={!invalidFile}/>
 		</form>
 	)
-}

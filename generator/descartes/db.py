@@ -28,16 +28,16 @@ def insert_param_row(column, row, output):
         """.format(column, output, row)
     )
 
-def save_output_file(filePath, fileName):
+def save_output_file(filePath):
     db.execute(
         """
-            INSERT INTO output_files (path, file_name) 
-            VALUES ('{}', '{}');
-        """.format(filePath, fileName)
+            INSERT INTO output_files (file_path) 
+            VALUES ('{}');
+        """.format(filePath)
     )
 
 def dump_csv():
-    files = db.execute("SELECT path FROM output_files;")
+    files = db.execute("SELECT file_path FROM output_files;")
 
     for r in files:
         path = r[0]
@@ -47,7 +47,7 @@ def dump_csv():
             r = csv.reader(csvfile)
             headers = next(r, None)
             
-            add_param_column('data', headers)
+            add_param_column('output_data', headers)
             
-        df.to_sql('data', con=db, index=False, if_exists='append')
-        db.execute("DELETE FROM output_files WHERE path='{}';".format(path))
+        df.to_sql('output_data', con=db, index=False, if_exists='append')
+        db.execute("DELETE FROM output_files WHERE file_path='{}';".format(path))

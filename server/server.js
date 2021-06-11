@@ -34,7 +34,7 @@ app.post('/upload', async(req, res) => {
         });
 
         if(fileType === 'csv') {
-            pool.query(`INSERT INTO output_files (path) VALUES ('${filePath}');`)
+            pool.query(`INSERT INTO output_files (file_path) VALUES ('${filePath}');`)
         }
     });
 });
@@ -42,7 +42,6 @@ app.post('/upload', async(req, res) => {
 app.post('/columns', async (req, res) => {
     await pool.query(`SELECT column_name FROM information_schema.columns WHERE table_name='${req.body.table}';`)
         .then((data) => {
-            // console.log(data)
             res.json(data.rows)
         }).catch(error => {
             console.log(error);

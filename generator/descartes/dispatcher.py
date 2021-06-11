@@ -60,11 +60,11 @@ def create_csv(full, output_dir, file_name):
         dict_writer.writerows(full)
         f.close()
 
-    db.save_output_file(filePath, file_name)
+    db.save_output_file(filePath)
 
 
 if __name__ == "__main__":
-    files = db.db.execute("SELECT path FROM output_files;")
+    files = db.db.execute("SELECT file_path FROM output_files;")
     
     if(len(files.fetchall()) <= 0):
         try:
