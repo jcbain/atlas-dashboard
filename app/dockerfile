@@ -4,9 +4,8 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN yarn install
+RUN yarn install --silent
 
 EXPOSE 3000
-CMD ["yarn", "start"]
 
-# To start: docker run -it -p 3000:3000 frontend
+CMD ["yarn", "start"]

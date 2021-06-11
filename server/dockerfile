@@ -4,7 +4,7 @@ WORKDIR /usr/src
 
 COPY . .
 
-RUN npm install
+RUN npm install --silent
 
 EXPOSE 5000
 CMD ["npm", "start"]

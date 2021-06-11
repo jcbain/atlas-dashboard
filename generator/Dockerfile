@@ -24,6 +24,7 @@ RUN apt-get install -y \
 
 RUN pip3 install sqlalchemy
 RUN pip install psycopg2
+RUN pip3 install pandas
 
 # retrieve and install slim
 RUN wget http://benhaller.com/slim/SLiM.zip

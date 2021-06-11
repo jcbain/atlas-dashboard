@@ -44,7 +44,7 @@ def reformat_param(param):
     reformated = re.sub("=", "", param)
     return reformated
 
-def create_file_name(*params):
+def create_file_name(params):
     """
     Takes a list of reformated params and concatenates them to a file
         name.

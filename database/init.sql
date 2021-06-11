@@ -1,7 +1,11 @@
 CREATE SEQUENCE user_id_seq;
-CREATE TABLE IF NOT EXISTS output_data ();
-CREATE TABLE IF NOT EXISTS output_files (
-    id SERIAL NOT NULL,
-    path TEXT,
-    PRIMARY KEY (id)
+
+CREATE TABLE IF NOT EXISTS param_variables (
+    output_pk TEXT
 );
+
+CREATE TABLE IF NOT EXISTS output_files (
+    file_path TEXT PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS output_data ();

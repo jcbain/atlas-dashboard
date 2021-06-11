@@ -7,5 +7,9 @@
 #SBATCH --mail-type=END
 #SBATCH --array=1-32
 
-CMD=$(sed -n "${SLURM_ARRAY_TASK_ID}p" /usr/src/uploads/m_jobs.txt)
-python3 -u dispatcher.py $CMD
+input="/usr/src/uploads/jobsFile.txt"
+while IFS= read -r line
+do
+  echo "$line"
+  python3 -u dispatcher.py $line
+done < "$input"
