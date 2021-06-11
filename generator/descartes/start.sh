@@ -8,7 +8,6 @@ while !([ -f /usr/src/uploads/slimFile.slim ] && [ -f /usr/src/uploads/jobsFile.
 sudo /etc/init.d/munge start
 sudo service slurmctld start
 sudo service slurmd start
-
-# sets permissions for batch_jobs 
+#give permissions
 sudo chmod 777 ./batch_jobs.sh
 srun ./batch_jobs.sh

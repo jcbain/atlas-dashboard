@@ -10,6 +10,7 @@ app.use(fileUpload());
 app.use(cors());
 app.use(express.json());
 
+
 app.post('/upload', async(req, res) => {
     var files = req.files;
 
@@ -24,7 +25,7 @@ app.post('/upload', async(req, res) => {
         let fileType = file.name.split('.').pop();
         let fileName = `${key}.${fileType}`;
         let filePath = `${__dirname}/uploads/${fileName}`;
-
+        
         file.mv(filePath, err => {
             if(err) {
                 console.log(err);
@@ -38,10 +39,10 @@ app.post('/upload', async(req, res) => {
     });
 });
 
-app.get('/simulation', async (req, res) => {
-    await pool.query("SELECT * FROM data;")
+app.post('/columns', async (req, res) => {
+    await pool.query(`SELECT column_name FROM information_schema.columns WHERE table_name='${req.body.table}';`)
         .then((data) => {
-            console.log(data.rows)
+            // console.log(data)
             res.json(data.rows)
         }).catch(error => {
             console.log(error);

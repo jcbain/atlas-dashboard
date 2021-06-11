@@ -23,7 +23,7 @@ def add_param_column(table, columns):
 def insert_param_row(column, row, output):
     db.execute(
         """
-            INSERT INTO parameters (output_pk, {})
+            INSERT INTO param_variables (output_pk, {})
             VALUES('{}', {});
         """.format(column, output, row)
     )

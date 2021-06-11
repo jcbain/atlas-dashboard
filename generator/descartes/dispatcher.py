@@ -26,7 +26,7 @@ def run_slim_process():
         reps = 3
 
     params = (' -d ').join(args)
-    db.add_param_column('parameters', d.keys())
+    db.add_param_column('param_variables', d.keys())
     db.insert_param_row(", ".join(d.keys()), ", ".join(d.values()), file_name)
 
     for i in range(reps):

@@ -1,15 +1,20 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {Table} from 'react-bootstrap'
+import '../App.css'
 import React, { useState } from 'react';
+import Select from 'react-select'
 var Axios = require('axios')
 
 export default function DataTable() {
-	const [data, setData] = useState()
+	const [dataVars, setDataVars] = useState([])
+    const [paramVars, setParamVars] = useState([])
 
-    const handleClick = async e => {
-		try {
-			const res = await Axios.get('/simulation');
-            setData(res.data)
+    const handleClick = async () => {
+        try {
+            var parameters = await Axios.post('/columns', {table: 'param_variables'});
+            setParamVars(parameters.data.map(e => ({value: e.column_name, label: e.column_name})));
+
+			var output = await Axios.post('/columns', {table: 'data'});
+            setDataVars(output.data.map( e => ({value: e.column_name, label: e.column_name})));
 		} catch (err) {
 			if(err.response.status === 500) {
 				console.log('Server problem');
@@ -17,22 +22,19 @@ export default function DataTable() {
 				console.log(err.response.data.msg);
 			}
 		}
-	}
+    };
 
     return(
         <div className="row">
-            <Table
-                className="text-center"
-                striped
-                bordered
-                hover
-                size="lg"
-            >
-                <th>Output files</th>
-                <tbody>
-                    <tr><p>{JSON.stringify(data)}</p></tr>
-                </tbody>
-            </Table>
+            { paramVars.map((e, index) => {
+                return (
+                    <Select
+                        className="select-menu"
+                        defaultValue={paramVars[index]}
+                        options={dataVars}
+                    />
+                );
+            })}
 
             <input className="button mt-3" type="submit" onClick={handleClick} value="Visualize data"/>
         </div>

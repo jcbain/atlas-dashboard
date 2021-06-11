@@ -22,8 +22,7 @@ services:
       - db
     volumes:
       - uploads:/usr/src/uploads/
-      - ./server:/usr/src/app
-
+      
   db:
     build: ./database
     restart: always
