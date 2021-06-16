@@ -44,7 +44,7 @@ ADD descartes /usr/src
 WORKDIR /usr/src
 
 # convert batch_jobs.sh dos format to unix
-RUN dos2unix batch_jobs.sh
+RUN dos2unix *
 
 CMD ["/bin/sh", "./start.sh"]
 # CMD ["/bin/sh"]

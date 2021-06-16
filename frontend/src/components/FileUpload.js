@@ -19,7 +19,6 @@ export default function FileUpload() {
 
 		Object.keys(files).forEach(key => {
 			formData.append(key, files[key])
-			console.log(files[key])
 		});
 
 		try {
@@ -34,7 +33,7 @@ export default function FileUpload() {
 		}
 	}
 
-
+//@TODO: Make into one function that takes slim, jobs, and data file validation
 	const slimValidateFile = (e) => {
 		let validExt = /(\.slim)$/i;
 		let filename = e.target.files[0].name
@@ -108,3 +107,4 @@ export default function FileUpload() {
 			<input className="button mt-3 mr-3" type="submit" value="Upload" disabled={!invalidFile}/>
 		</form>
 	)
+}
