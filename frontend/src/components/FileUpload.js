@@ -6,13 +6,13 @@ var FormData = require('form-data')
 var Axios = require('axios')
 
 export default function FileUpload() {
-  const [invalidFile, setInvalidFile] = useState(false);
+  	const [invalidFile, setInvalidFile] = useState(false);
 	const [files, setFiles] = useState({
 		'slimFile':'',
 		'jobsFile':'',
 		'dataFile':''
 	})
-	
+
 	const onSubmit = async e => {
 		e.preventDefault();
 		const formData = new FormData();
@@ -23,7 +23,6 @@ export default function FileUpload() {
 
 		try {
 			await Axios.post('/upload', formData);
-
 		} catch (err) {
 			if(err.response.status === 500) {
 				console.log('Server problem');
@@ -33,38 +32,19 @@ export default function FileUpload() {
 		}
 	}
 
-//@TODO: Make into one function that takes slim, jobs, and data file validation
-	const slimValidateFile = (e) => {
-		let validExt = /(\.slim)$/i;
-		let filename = e.target.files[0].name
-		if (!validExt.exec(filename)) {
-			alert("File needs to be .slim")
-			setInvalidFile(false)
-		} else {
-			setFiles({...files, slimFile: e.target.files[0]})
-		}
-	}
+	const validateFile = (e) => {
+		let type = e.target.accept
+		let validExt = new RegExp(`${type}`, 'i')
+		let file = e.target.files[0]
 
-	const jobsValidateFile = (e) => {
-		let validExt = /(\.txt)$/i;
-		let filename = e.target.files[0].name
-		if (!validExt.exec(filename)) {
-			alert("File needs to be .txt")
+		if (!validExt.exec(file.name)) {
+			alert(`File needs to be ${type}`)
 			setInvalidFile(false)
 		} else {
-			setFiles({...files, jobsFile: e.target.files[0]})
-			setInvalidFile(true)
-		}
-	}
-
-	const dataValidateFile = (e) => {
-		let validExt = /(\.csv)$/i;
-		let filename = e.target.files[0].name
-		if (!validExt.exec(filename)) {
-			alert("File needs to be .csv")
-			setInvalidFile(false)
-		} else {
-			setFiles({...files, dataFile: e.target.files[0]})
+			setFiles(oldFile => ({
+				...oldFile,
+				[e.target.id]:file
+			}))
 			setInvalidFile(true)
 		}
 	}
@@ -81,10 +61,22 @@ export default function FileUpload() {
 					<Accordion.Collapse eventKey="0">
 						<Card.Body>
 							<label className="font-weight-bold">Slim script</label>
-							<input type="file" className="form-control-file" accept=".slim" onChange={slimValidateFile}/>
+							<input
+								type="file"
+								className="form-control-file"
+								id="slimFile"
+								accept=".slim"
+								onChange={validateFile}
+							/>
 
-							<label className="font-weight-bold mt-3" htmlFor="jobsFile">Parameters file</label>
-							<input type="file" className="form-control-file" accept=".txt" onChange={jobsValidateFile}/>
+							<label className="font-weight-bold mt-3">Parameters file</label>
+							<input
+								type="file"
+								className="form-control-file" 
+								id="jobsFile"
+								accept=".txt"
+								onChange={validateFile}
+							/>
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>
@@ -98,7 +90,13 @@ export default function FileUpload() {
 					<Accordion.Collapse eventKey="1">
 						<Card.Body>
 							<label className="font-weight-bold">Data</label>
-							<input type="file" className="form-control-file" accept=".csv" onChange={dataValidateFile}/>
+							<input
+								type="file"
+								className="form-control-file"
+								id="dataFile"
+								accept=".csv"
+								onChange={validateFile}
+							/>
 						</Card.Body>
 					</Accordion.Collapse>
 				</Card>

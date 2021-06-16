@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState } from 'react';
 import Select from 'react-select'
-var Axios = require('axios')
+let Axios = require('axios')
 
 const defaultObject = (name) => ({
     label: name,
@@ -15,7 +15,7 @@ export default function DataTable() {
 
     const handleClick = async () => {
         try {
-            var raw_param = await Axios.post('/columns', {table: 'raw_data'});
+            let raw_param = await Axios.get('/columns', {table: 'raw_data'});
             setVariables(raw_param.data.map(e => (defaultObject(e.column_name))));
             
 		} catch (err) {
@@ -29,7 +29,7 @@ export default function DataTable() {
 
     const onAlterTable = async() => {
         try {
-            var cols = {
+            let cols = {
                 params:[],
                 visuals:{}
             };
