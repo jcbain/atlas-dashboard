@@ -24,6 +24,7 @@ RUN apt-get install -y \
 
 RUN pip3 install sqlalchemy
 RUN pip install psycopg2
+RUN pip3 install pandas
 
 # retrieve and install slim
 RUN wget http://benhaller.com/slim/SLiM.zip
@@ -42,13 +43,11 @@ ADD slurm.conf /etc/slurm-llnl
 ADD descartes /usr/src
 WORKDIR /usr/src
 
-# RUN python3 -u app.py
-
 # convert batch_jobs.sh dos format to unix
-RUN dos2unix batch_jobs.sh
+RUN dos2unix *
 
-# @TODO: Baseimage-docker so ./start.sh is run on start
 CMD ["/bin/sh", "./start.sh"]
+# CMD ["/bin/sh"]
 
 # meta
 LABEL version="0.1"

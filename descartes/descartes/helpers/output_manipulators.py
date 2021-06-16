@@ -31,7 +31,7 @@ def clean_body(body):
     body: list
         A clean list of all of the rows of data.
     """
-    quotes_remove = body.replace('"', '').replace('m39 ', '')
+    quotes_remove = body.replace('"', '')
     body_list = quotes_remove.split('\\n')
     body = list(filter(lambda x: x != '', body_list))
 

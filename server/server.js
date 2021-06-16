@@ -10,7 +10,6 @@ app.use(fileUpload());
 app.use(cors());
 app.use(express.json());
 
-
 app.post('/upload', async(req, res) => {
     var files = req.files;
 
@@ -32,10 +31,6 @@ app.post('/upload', async(req, res) => {
                 return res.status(500).send(err);
             }
         });
-
-        if(fileType === 'csv') {
-            pool.query(`INSERT INTO output_files (file_path) VALUES ('${filePath}');`)
-        }
     });
 });
 
@@ -46,6 +41,29 @@ app.post('/columns', async (req, res) => {
         }).catch(error => {
             console.log(error);
         });
+});
+
+app.post('/parameters', async (req, res) => {
+    var params = req.body.params
+    var visuals = req.body.visuals
+    var queryState = params.map( p => (`R.${p}=S.${p}`))
+
+    params.forEach( async (col) => {
+        await pool.query(
+            `ALTER TABLE selection
+            ADD COLUMN IF NOT EXISTS ${col} double precision;`)
+    })
+
+    await pool.query(
+        `INSERT INTO selection (${params.toString()})
+        SELECT DISTINCT ${params.toString()}
+        FROM raw_data;`)    
+
+    await pool.query(
+        `INSERT INTO visual (v_id, x, y, color)
+        SELECT S.id, ${visuals.x}, ${visuals.y}, ${visuals.color}
+        FROM raw_data R, selection S
+        WHERE ${queryState.join(' AND ')};`)
 });
 
 app.listen(PORT, () => console.log("Server started..."));

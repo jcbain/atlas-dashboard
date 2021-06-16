@@ -1,16 +1,16 @@
 version: "3.9"
 
 services:
-  app:  
-    build: ./app
+  frontend:  
+    build: ./frontend
     stdin_open: true
     environment:
       CHOKIDAR_USEPOLLING: "true"
     ports:
       - 3000:3000
     volumes:
-      - ./app:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./frontend:/usr/src/frontend
+      - /usr/src/frontend/node_modules
 
   server:
     build: ./server
@@ -22,11 +22,11 @@ services:
       - db
     volumes:
       - uploads:/usr/src/uploads/
-      
+
   db:
     build: ./database
     restart: always
-    environment: 
+    environment:
       - POSTGRES_DB=atlas_simulation
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -37,7 +37,7 @@ services:
       - ./database/pgdata:/var/lib/postgresql/data postgres
   
   descartes:
-    build: ./generator
+    build: ./descartes
     restart: on-failure
     hostname: "slurm_host"
     volumes:
