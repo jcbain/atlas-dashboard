@@ -12,11 +12,6 @@ app.use(express.json());
 
 app.post('/upload', async(req, res) => {
     let files = req.files;
-
-    if(files === null) {
-        return res.status(400).json({ msg: 'No file uploaded' });
-    }
-
     let fileKeys = Object.keys(req.files);
 
     fileKeys.forEach( async function (key) {
@@ -34,8 +29,9 @@ app.post('/upload', async(req, res) => {
     });
 });
 
-app.get('/columns', async (req, res) => {
-    await pool.query(`SELECT column_name FROM information_schema.columns WHERE table_name='${req.body.table}';`)
+app.post('/columns', async (req, res) => {
+    let obj = req.body;
+    await pool.query(`SELECT ${obj.select} FROM ${obj.from} WHERE table_name='${obj.table}';`)
         .then((data) => {
             res.json(data.rows);
         }).catch(error => {
@@ -44,24 +40,24 @@ app.get('/columns', async (req, res) => {
 });
 
 app.post('/parameters', async (req, res) => {
-    let params = req.body.params;
-    let visuals = req.body.visuals;
+    let params = await req.body.params;
+    let visuals = await req.body.visuals;
+
     let queryState = params.map( p => (`R.${p}=S.${p}`));
 
     await params.forEach( (col) => {
         pool.query(
             `ALTER TABLE selection
             ADD COLUMN IF NOT EXISTS ${col} double precision;`)
-        console.log(col)
     })
 
     await pool.query(
         `INSERT INTO selection (${params.toString()})
         SELECT DISTINCT ${params.toString()}
-        FROM raw_data;`)    
+        FROM raw_data;`)
 
     await pool.query(
-        `INSERT INTO visual (v_id, x, y, color)
+        `INSERT INTO visual (param_id, x, y, color)
         SELECT S.id, ${visuals.x}, ${visuals.y}, ${visuals.color}
         FROM raw_data R, selection S
         WHERE ${queryState.join(' AND ')};`)

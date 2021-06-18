@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS selection (
 
 
 CREATE TABLE IF NOT EXISTS visual (
-    v_id INTEGER,
+    param_id INTEGER REFERENCES selection(id),
     x double precision,
     y double precision,
     color double precision
