@@ -3,7 +3,7 @@ let Axios = require('axios');
 const API = () => {
     const get = async({path, table, search}) => {
         try {
-            let res = await Axios.get(`${path}?table=${table}&search=${search ?? '*'}`);
+            let res = await Axios.get(`${path}?table=${table ?? ''}&search=${search ?? '*'}`);
             return res
         } catch (err) {
 			if(err.response.status === 500) {
@@ -16,8 +16,7 @@ const API = () => {
 
     const post = async({path, params}) => {
         try {
-            let res = await Axios.post(`${path}`, params);
-            return res
+            await Axios.post(`${path}`, params);
         } catch (err) {
 			if(err.response.status === 500) {
 				console.log('Server problem');

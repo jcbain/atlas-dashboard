@@ -29,9 +29,8 @@ app.post('/upload', async(req, res) => {
     });
 });
 
-app.post('/columns', async (req, res) => {
-    let obj = req.body;
-    await pool.query(`SELECT ${obj.select} FROM ${obj.from} WHERE table_name='${obj.table}';`)
+app.get('/variables', async (req, res) => {
+    await pool.query(`SELECT column_name FROM information_schema.columns WHERE table_name='raw_data';`)
         .then((data) => {
             res.json(data.rows);
         }).catch(error => {
@@ -39,10 +38,9 @@ app.post('/columns', async (req, res) => {
         });
 });
 
-app.post('/parameters', async (req, res) => {
+app.post('/tables', async (req, res) => {
     let params = await req.body.params;
     let visuals = await req.body.visuals;
-
     let queryState = params.map( p => (`R.${p}=S.${p}`));
 
     await params.forEach( (col) => {
@@ -63,4 +61,12 @@ app.post('/parameters', async (req, res) => {
         WHERE ${queryState.join(' AND ')};`)
 });
 
+app.get('/charts', async (req, res) => {
+    await pool.query(`SELECT * FROM selection;`)
+        .then((data) => {
+            res.json(data.rows);
+        }).catch(error => {
+            console.log(error);
+        });
+})
 app.listen(PORT, () => console.log("Server started..."));

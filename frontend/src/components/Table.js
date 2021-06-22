@@ -1,7 +1,7 @@
 import api from '../api'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select'
+import { Link } from 'react-router-dom';
 
 const defaultObject = (name) => ({
     label: name,
@@ -19,14 +19,7 @@ export default function DataTable() {
 
     useEffect(() => {
         async function fetchColumns() {
-            let res = await api.post({
-                path: '/columns',
-                params: {
-                    table: 'raw_data',
-                    select: 'column_name',
-                    from: 'information_schema.columns'
-                }
-            });
+            let res = await api.get({path: '/variables'});
             setVariables(res.data.map ((e) => (defaultObject(e.column_name))));
         }
         fetchColumns();
@@ -38,12 +31,13 @@ export default function DataTable() {
         } else {
             tables.visuals[e.value]=vars
         }
-        setTables({...tables})
+        setTables({ ...tables })
     }
     
+    // Goes to next page (charts)
     const onNext = async() => {
         await api.post({
-            path:'/parameters',
+            path:'/tables',
             params: tables
         });
     };
@@ -71,7 +65,13 @@ export default function DataTable() {
                     );
                 })}
             </div>
-            <input className="button mt-3" type="submit" onClick={onNext} value="Next"/>
+
+            <Link to="/setup?step=1">
+				<input className="button mt-3 mr-3" type="submit" value="Back"/>
+			</Link>
+            <Link to="/datavis">
+                <input className="button mt-3" type="submit" onClick={onNext} value="Next"/>
+            </Link>
         </div>
     )
 }
