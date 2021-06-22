@@ -1,51 +1,45 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import React, { useState } from 'react';
+import api from '../api'
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select'
-let Axios = require('axios')
+import { Link } from 'react-router-dom';
 
 const defaultObject = (name) => ({
     label: name,
     value: name
 });
 
-const options = ["x", "y", "color", "parameter", "other"].map(vars => (defaultObject(vars)));
+const options = ["x", "y", "color", "parameter"].map(vars => (defaultObject(vars)));
 
 export default function DataTable() {
-	const [variables, setVariables] = useState([]);
+	const [ variables, setVariables ] = useState([]);
+    const [ tables, setTables ] = useState({
+        params:[],
+        visuals:{}
+    });
 
-    const handleClick = async () => {
-        try {
-            let raw_param = await Axios.get('/columns', {table: 'raw_data'});
-            setVariables(raw_param.data.map(e => (defaultObject(e.column_name))));
-            
-		} catch (err) {
-			if(err.response.status === 500) {
-				console.log('Server problem');
-			} else {
-				console.log(err.response.data.msg);
-			}
-		}
-    };
+    useEffect(() => {
+        async function fetchColumns() {
+            let res = await api.get({path: '/variables'});
+            setVariables(res.data.map ((e) => (defaultObject(e.column_name))));
+        }
+        fetchColumns();
+    });
 
-    const onAlterTable = async() => {
-        try {
-            let cols = {
-                params:[],
-                visuals:{}
-            };
+    const onSelect = (e, vars) => {
+        if (e.value === 'parameter') {
+            tables.params.push(vars)
+        } else {
+            tables.visuals[e.value]=vars
+        }
+        setTables({ ...tables })
+    }
     
-            variables.map(vars => {
-                if (vars.value === 'parameter') {
-                    cols.params.push(vars.label)
-                } else if (vars.value !== "other") {
-                    cols.visuals[vars.value]=vars.label
-                }
-            });
-
-            await Axios.post('/parameters', cols);
-		} catch (err) {
-            console.log(err.response.data.msg);
-		}
+    // Goes to next page (charts)
+    const onNext = async() => {
+        await api.post({
+            path:'/tables',
+            params: tables
+        });
     };
     
     return (
@@ -63,17 +57,21 @@ export default function DataTable() {
                                 className="mb-3 col-6"
                                 defaultValue={variables[index]}
                                 options={options}
-                                onChange={event => {
-                                    [...variables][index].value = event.value
-                                    setVariables([...variables])
+                                onChange={(event) => {
+                                    onSelect(event, [...variables][index].label)
                                 }}
                             />
                         </div>
                     );
                 })}
             </div>
-            <input className="button mt-3" type="submit" onClick={handleClick} value="Visualize data"/>
-            <input className="button mt-3" type="submit" onClick={onAlterTable} value="Next"/>
+
+            <Link to="/setup?step=1">
+				<input className="button mt-3 mr-3" type="submit" value="Back"/>
+			</Link>
+            <Link to="/datavis">
+                <input className="button mt-3" type="submit" onClick={onNext} value="Next"/>
+            </Link>
         </div>
     )
 }

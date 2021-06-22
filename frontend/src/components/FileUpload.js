@@ -1,9 +1,9 @@
+import api from '../api'
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'
 import { Accordion, Card, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom';
 
 var FormData = require('form-data')
-var Axios = require('axios')
 
 export default function FileUpload() {
   	const [invalidFile, setInvalidFile] = useState(false);
@@ -13,7 +13,7 @@ export default function FileUpload() {
 		'dataFile':''
 	})
 
-	const onSubmit = async e => {
+	const onSubmit = async (e) => {
 		e.preventDefault();
 		const formData = new FormData();
 
@@ -21,15 +21,10 @@ export default function FileUpload() {
 			formData.append(key, files[key])
 		});
 
-		try {
-			await Axios.post('/upload', formData);
-		} catch (err) {
-			if(err.response.status === 500) {
-				console.log('Server problem');
-			} else {
-				console.log(err.response.data.msg);
-			}
-		}
+		await api.post({
+			path: '/upload',
+			params: formData
+		});
 	}
 
 	const validateFile = (e) => {
@@ -38,14 +33,14 @@ export default function FileUpload() {
 		let file = e.target.files[0]
 
 		if (!validExt.exec(file.name)) {
-			alert(`File needs to be ${type}`)
-			setInvalidFile(false)
+			alert(`File needs to be ${type}`);
+			setInvalidFile(false);
 		} else {
 			setFiles(oldFile => ({
 				...oldFile,
 				[e.target.id]:file
-			}))
-			setInvalidFile(true)
+			}));
+			setInvalidFile(true);
 		}
 	}
 
@@ -103,6 +98,9 @@ export default function FileUpload() {
 			</Accordion>
 			
 			<input className="button mt-3 mr-3" type="submit" value="Upload" disabled={!invalidFile}/>
+			<Link to="/setup?step=2">
+				<input className="button mt-3 mr-3" type="submit" value="Next"/>
+			</Link>
 		</form>
 	)
 }
