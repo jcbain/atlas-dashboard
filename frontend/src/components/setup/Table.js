@@ -1,4 +1,4 @@
-import api from '../api'
+import api from '../../api'
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select'
 import { Link } from 'react-router-dom';
@@ -10,7 +10,7 @@ const defaultObject = (name) => ({
 
 const options = ["x", "y", "color", "parameter"].map(vars => (defaultObject(vars)));
 
-export default function DataTable() {
+function DataTable({ changeStep }) {
 	const [ variables, setVariables ] = useState([]);
     const [ tables, setTables ] = useState({
         params:[],
@@ -31,10 +31,9 @@ export default function DataTable() {
         } else {
             tables.visuals[e.value]=vars
         }
-        setTables({ ...tables })
+        setTables({ ...tables });
     }
     
-    // Goes to next page (charts)
     const onNext = async() => {
         await api.post({
             path:'/tables',
@@ -66,12 +65,17 @@ export default function DataTable() {
                 })}
             </div>
 
-            <Link to="/setup?step=1">
-				<input className="button mt-3 mr-3" type="submit" value="Back"/>
-			</Link>
+            <input
+                className="button mt-3 mr-3"
+                type="submit"
+                value="Back"
+                onClick={()=>changeStep(1)}/>
+            <input className="button mt-3" type="submit" onClick={onNext} value="Query"/>
             <Link to="/datavis">
-                <input className="button mt-3" type="submit" onClick={onNext} value="Next"/>
+                <input className="button mt-3" type="submit" value="Next"/>
             </Link>
         </div>
     )
 }
+
+export default DataTable;
