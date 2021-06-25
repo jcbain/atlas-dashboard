@@ -1,10 +1,12 @@
 import api from '../../api'
 import React, { useState } from 'react';
 import { Accordion, Card, Button } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom';
 
 var FormData = require('form-data')
 
-function FileUpload({ changeStep }) {
+export function FileUpload() {
+	let history = useHistory();
   	const [ invalidFile, setInvalidFile ] = useState(false);
 	const [ files, setFiles ] = useState({
 		'slimFile':'',
@@ -42,6 +44,8 @@ function FileUpload({ changeStep }) {
 			setInvalidFile(true);
 		}
 	}
+
+	const handleNext = () => {history.push('/setup?step=2')};
 
 	return (
 		<form onSubmit={onSubmit}>
@@ -96,18 +100,8 @@ function FileUpload({ changeStep }) {
 				</Card>
 			</Accordion>
 			
-			<input
-				className="button mt-3 mr-3"
-				type="submit"
-				value="Upload"
-				disabled={!invalidFile}/>
-			<input 
-				className="button mt-3 mr-3"
-				type="submit"
-				value="Next"
-				onClick={ ()=>changeStep(2) }/>
+			<input className="button mt-3 mr-3" type="submit" value="Upload" disabled={!invalidFile}/>
+			<input className="button mt-3 mr-3" type="submit" value="Next" onClick={handleNext} />
 		</form>
 	)
 }
-
-export default FileUpload;

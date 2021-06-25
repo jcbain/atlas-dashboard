@@ -1,7 +1,7 @@
 import api from '../../api'
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select'
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const defaultObject = (name) => ({
     label: name,
@@ -10,7 +10,9 @@ const defaultObject = (name) => ({
 
 const options = ["x", "y", "color", "parameter"].map(vars => (defaultObject(vars)));
 
-function DataTable({ changeStep }) {
+export function DataTable() {
+    let history = useHistory();
+    
 	const [ variables, setVariables ] = useState([]);
     const [ tables, setTables ] = useState({
         params:[],
@@ -34,12 +36,8 @@ function DataTable({ changeStep }) {
         setTables({ ...tables });
     }
     
-    const onNext = async() => {
-        await api.post({
-            path:'/tables',
-            params: tables
-        });
-    };
+    const handleNext = () => {history.push('/datavis')};
+    const handleBack = () => {history.push('/setup?step=1')};
     
     return (
         <div className="border rounded p-5 mb-5">
@@ -65,17 +63,9 @@ function DataTable({ changeStep }) {
                 })}
             </div>
 
-            <input
-                className="button mt-3 mr-3"
-                type="submit"
-                value="Back"
-                onClick={()=>changeStep(1)}/>
-            <input className="button mt-3" type="submit" onClick={onNext} value="Query"/>
-            <Link to="/datavis">
-                <input className="button mt-3" type="submit" value="Next"/>
-            </Link>
+            <input className="button mt-3" type="submit" value="Back" onClick={handleBack}/>
+            <input className="button mt-3" type="submit" value="Next" onClick={handleNext}/>
+            
         </div>
     )
 }
-
-export default DataTable;

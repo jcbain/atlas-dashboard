@@ -1,27 +1,27 @@
 import './App.css';
-import Setup from './components/setup/Setup';
 import Parameters from './components/parameters/Parameters'
 import { Route, Switch, useLocation } from 'react-router-dom';
+import queryString from 'query-string'
+import { FileUpload, DataTable } from './components/setup';
 
 function App() {
-	// let step = 1;
-
-	// try {
-	// 	const location = useLocation();
-	// 	let p = location.search;
-	// 	step = parseInt((p.split('step=')[1]))
-	// } catch (err) {
-	// 	console.log(err)
-	// }
+	const renderSteps = (props) => {
+		const currStep = window.location.search;
+		const values = queryString.parse(currStep);
+		let step = values.step;
+		
+		if (step === '1') {return <FileUpload {...props}/>}
+		if (step === '2') {return <DataTable {...props}/>}
+	}
 
 	return (
 		<div className="container mt-5">
 			<div>
-              <Switch>
-                <Route path='/setup' exact component={ Setup }/>
-				<Route path='/datavis' exact component={ Parameters }/>
-              </Switch>
-          	</div>
+				<Switch>
+					<Route path='/setup' render={props => renderSteps(props)}/>
+					<Route path='/datavis' component={ Parameters }/>
+				</Switch>
+			</div>
 		</div>
 	);
 }
