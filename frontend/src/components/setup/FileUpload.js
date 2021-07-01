@@ -1,17 +1,15 @@
-import api from '../api'
 import React, { useState } from 'react';
 import { Accordion, Card, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom';
 
 var FormData = require('form-data')
 
-export default function FileUpload() {
-  	const [invalidFile, setInvalidFile] = useState(false);
-	const [files, setFiles] = useState({
+function FileUpload({ mutation }) {
+  	const [ invalidFile, setInvalidFile ] = useState(false);
+	const [ files, setFiles ] = useState({
 		'slimFile':'',
 		'jobsFile':'',
 		'dataFile':''
-	})
+	});
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
@@ -20,11 +18,8 @@ export default function FileUpload() {
 		Object.keys(files).forEach(key => {
 			formData.append(key, files[key])
 		});
-
-		await api.post({
-			path: '/upload',
-			params: formData
-		});
+		
+		mutation.mutate(formData);
 	}
 
 	const validateFile = (e) => {
@@ -97,10 +92,13 @@ export default function FileUpload() {
 				</Card>
 			</Accordion>
 			
-			<input className="button mt-3 mr-3" type="submit" value="Upload" disabled={!invalidFile}/>
-			<Link to="/setup?step=2">
-				<input className="button mt-3 mr-3" type="submit" value="Next"/>
-			</Link>
+			<input
+				className="button mt-3 mr-3"
+				type="submit"
+				value="Upload"
+				disabled={!invalidFile}/>
 		</form>
 	)
 }
+
+export default FileUpload;

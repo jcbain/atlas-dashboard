@@ -1,8 +1,15 @@
-FROM node:16-slim
+FROM node:16-alpine
 
 WORKDIR /usr/src
 
 COPY . .
+
+ENV DOCKER_VERSION=18.09.4
+
+RUN apk --no-cache add curl
+RUN curl -sfL -o docker.tgz "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz" && \
+  tar -xzf docker.tgz docker/docker --strip=1 --directory /usr/local/bin && \
+  rm docker.tgz
 
 RUN npm install --silent
 

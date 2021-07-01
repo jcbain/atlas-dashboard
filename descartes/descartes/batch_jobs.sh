@@ -6,6 +6,7 @@
 #SBATCH --mail-type=BEGIN
 #SBATCH --mail-type=END
 #SBATCH --array=1-32
+
 {
   input="/usr/src/uploads/jobsFile.txt"
   while IFS= read -r line
@@ -17,4 +18,4 @@
   echo "No data generated from descartes."
 }
 
-python3 -u csv_dump.py
+echo "Descartes process completed."
