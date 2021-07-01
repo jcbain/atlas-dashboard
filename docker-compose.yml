@@ -22,6 +22,7 @@ services:
       - db
     volumes:
       - uploads:/usr/src/uploads/
+      - /var/run/docker.sock:/var/run/docker.sock 
 
   db:
     build: ./database
@@ -37,6 +38,7 @@ services:
       - ./database/pgdata:/var/lib/postgresql/data postgres
   
   descartes:
+    container_name: descartes
     build: ./descartes
     restart: on-failure
     hostname: "slurm_host"
