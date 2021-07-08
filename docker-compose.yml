@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  frontend:  
+    build: ./frontend
+    stdin_open: true
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/usr/src/frontend
+      - /usr/src/frontend/node_modules
+
+  server:
+    build: ./server
+    ports:
+      - 5000:5000
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on:
+      - db
+    volumes:
+      - uploads:/usr/src/uploads/
+      - /var/run/docker.sock:/var/run/docker.sock 
+
+  db:
+    build: ./database
+    restart: always
+    environment:
+      - POSTGRES_DB=atlas_simulation
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - uploads:/usr/src/uploads/
+      - ./database/pgdata:/var/lib/postgresql/data postgres
+  
+  descartes:
+    container_name: descartes
+    build: ./descartes
+    restart: on-failure
+    hostname: "slurm_host"
+    volumes:
+      - uploads:/usr/src/uploads/
+    depends_on: 
+      - db
+
+volumes:
+  uploads:
+  pgdata:
