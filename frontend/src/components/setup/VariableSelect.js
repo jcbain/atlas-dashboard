@@ -2,12 +2,11 @@ import Select from 'react-select'
 import { useState, useEffect } from "react";
 import { useMutation } from "react-query"
 
-import api from '../../api'
-import { SelectObject, PostObject } from "../Constants";
+import { post, SelectObject, PostObject } from '../../utils'
 
-const DataTable = ({ data, handleHist }) => {
+const VariableSelect = ({ data, handleHist }) => {
     const mutation = useMutation(async(table) => {
-            await api.post(PostObject('/setup/tables', table));
+            await post(PostObject('/setup/tables', table));
         },{
             onSuccess: () => {
                 handleHist('/datavis');
@@ -25,7 +24,8 @@ const DataTable = ({ data, handleHist }) => {
                 (SelectObject(e.column_name, "parameter"))
             ));
         }
-    }, []);
+    
+    }, [data]);
 
     
     const onNext = async() => {
@@ -83,4 +83,4 @@ const DataTable = ({ data, handleHist }) => {
     )
 }
 
-export default DataTable;
+export default VariableSelect;
