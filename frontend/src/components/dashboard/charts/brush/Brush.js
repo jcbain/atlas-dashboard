@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
+import { usePrevious } from '../../../../hooks';
 
 const StyledG = styled.g`
     .selection {
@@ -13,24 +14,32 @@ const StyledG = styled.g`
     }
 `
 
-const Brush = ({dimensions, margin}) => {
+const Brush = ({ xScale, dimensions, margin, selection, setSelection }) => {
     const ref = useRef(null);
     const svgElement = d3.select(ref.current);
+    const previousSelection = usePrevious(selection);
 
     useEffect(()=> {
-        const brush = d3.brushX().extent([
-            [margin, margin],
-            [dimensions.width-margin, dimensions.height]
-        ]);
+        const brush = d3.brushX()
+                        .extent([
+                            [margin, margin],
+                            [dimensions.width-margin, dimensions.height]])
+                        .on("start brush end", brushed)
 
-        svgElement.selectAll("*").remove();
+        if(previousSelection === selection) {
+            svgElement
+                .call(brush)
+                .call(brush.move, [margin, dimensions.width-margin]);
+        }
 
-        svgElement
-            .call(brush)
-            .call(brush.move, 
-                [margin, dimensions.width-margin]
-            );
-    },[dimensions])
+    }, [dimensions, previousSelection, selection])
+
+    function brushed(event) {
+        if(event.selection) {
+            const index = event.selection.map(xScale.invert);
+            setSelection(index)
+        }
+    }
 
     return (
 		<StyledG ref={ref}/>

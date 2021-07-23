@@ -1,12 +1,8 @@
 import * as d3 from 'd3';
 import { useRef } from 'react';
 
-const XAxis = ({axes, dimensions, margin}) => {
+const XAxis = ({ xScale, dimensions }) => {
     const ref = useRef(null);
-
-	const xScale = d3.scaleLinear()
-		.domain([axes.minX, axes.maxX])
-		.range([margin, dimensions.width-margin]);
 	
 	const svgElement = d3.select(ref.current);
 	const axisGenerator = d3.axisBottom(xScale);
