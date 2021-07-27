@@ -20,11 +20,10 @@ const VariableSelect = ({ data, handleHist }) => {
 
     useEffect(() => {
         if(data) {
-            setVariables( data.map((e) => 
-                (SelectObject(e.column_name, "parameter"))
-            ));
+            setVariables( data.map((e) => {
+                return SelectObject(e.column_name, "parameter")
+            }));
         }
-    
     }, [data]);
 
     

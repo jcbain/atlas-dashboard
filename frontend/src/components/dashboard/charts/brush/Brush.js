@@ -31,8 +31,7 @@ const Brush = ({ xScale, dimensions, margin, selection, setSelection }) => {
                 .call(brush)
                 .call(brush.move, [margin, dimensions.width-margin]);
         }
-
-    }, [dimensions, previousSelection, selection])
+    }, [dimensions, previousSelection])
 
     function brushed(event) {
         if(event.selection) {

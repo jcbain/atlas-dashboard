@@ -1,25 +1,24 @@
 import { useState } from 'react';
-import { useChartData, useAxesData } from '../../../../hooks';
-import { Axes } from '../axes';
+import { useChartData } from '../../../../hooks';
+import PlotGenome from './PlotGenome';
 
 const GenomeChart = ({ state }) => {
     const isStatic = state.isStatic;
-    const [ chartData, status ] = useChartData('genome', state);
-    const [ axes ] = useAxesData(chartData, status);
+    const [ chartData ] = useChartData('genome', state);
     const [ selection, setSelection ] = useState();
 
     return (
         <div className={`p-3 border rounded ${ isStatic ? 'col-md-9' : 'col-md-12'}`}>
-            <Axes 
+            <PlotGenome
                 addBrush={false}
-                axes={axes}
+                chartData={chartData}
                 selection={selection}
                 setSelection={setSelection}
             />
-
-            <Axes
+            
+            <PlotGenome
                 addBrush={true}
-                axes={axes}
+                chartData={chartData}
                 selection={selection}
                 setSelection={setSelection}
             />

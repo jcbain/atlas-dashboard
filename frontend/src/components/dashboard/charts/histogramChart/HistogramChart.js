@@ -1,11 +1,11 @@
-import { useChartData, useAxesData } from '../../../../hooks';
+import { useChartData, useDataSummaries } from '../../../../hooks';
 // import { Axes } from '../axes';
 // import { useState } from 'react';
 
 const HistogramChart = ({ state }) => {
     const isStatic = state.isStatic;
     const [ chartData, status ] = useChartData('histo', state);
-    const [ axes ] = useAxesData(chartData, status);
+    const [ axes ] = useDataSummaries(chartData, status);
     // const [ selection, setSelection ] = useState([]);
 
     return (

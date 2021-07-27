@@ -25,7 +25,7 @@ const Charts = ({ state, updateTab }) => {
             </div>
 
 
-            <div className="col-md-6">
+            {/* <div className="col-md-6">
                 <div className="row p-2">
                     <HistogramChart state={state} />
 
@@ -39,7 +39,7 @@ const Charts = ({ state, updateTab }) => {
                         </div>
                     }
                 </div>
-            </div>
+            </div> */}
 
             <div className="col-md-6">
                 <div className="row p-2">

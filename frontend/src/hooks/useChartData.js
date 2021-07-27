@@ -26,7 +26,11 @@ function useChartData (paramType, state) {
     }, [state]);
 
     useEffect(()=> {
-        setChartData(data);
+        if(data){
+            const sortedData = data.sort((a, b) => parseFloat(a.x)-parseFloat(b.x));
+            setChartData(sortedData);
+        }
+
     }, [data]);
 
     return [
