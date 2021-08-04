@@ -2,9 +2,8 @@ import { useQuery, useMutation } from "react-query"
 import { useHistory, useLocation } from 'react-router-dom';
 
 import FileUpload from './FileUpload';
-import DataTable from './Table';
-import { PostObject } from "../Constants";
-import api from '../../api'
+import VariableSelect from './VariableSelect';
+import { fetch, post, PostObject } from '../../utils'
 
 const Setup = () => {
     const history = useHistory();
@@ -24,12 +23,12 @@ const Setup = () => {
 
     // fetch variables for variables selector in step 2
     const { data, refetch } = useQuery('variables', () =>
-            api.fetch('/setup/variables')
+            fetch('/setup/variables')
         );
 
     const mutation = useMutation(async(formData) => {
             handleHist('/setup?step=2');
-            await api.post(PostObject('/setup/upload', formData));
+            await post(PostObject('/setup/upload', formData));
         },{
             onSuccess: () => { // If file uploading and descartes is successful, refetch variables
                 refetch();
@@ -43,7 +42,7 @@ const Setup = () => {
                 <FileUpload mutation={mutation} />
                 :
                 ( (data && data.length > 0) ?
-                    <DataTable
+                    <VariableSelect
                         handleHist={handleHist}
                         data={data}
                     />
