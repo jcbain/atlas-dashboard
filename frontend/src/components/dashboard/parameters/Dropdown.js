@@ -1,18 +1,20 @@
 import Select from 'react-select'
 
-function ParameterSelector({ parameters, setParameters, options }) {
+function Dropdown({ parameters, setParameters }) {
+    const options = JSON.parse(sessionStorage.getItem('options'));
+
     const onSelect = (e, index) => {
-        let n = [...parameters]
-        n[index].value=e.label
+        let n = [...parameters];
+        n[index].value=e.label;
         setParameters(n);
     }
 
     return (
         <div>
             <h3 className="text-center mb-5">Parameters</h3>
-            { parameters.map((e, index) => {
+            { parameters && parameters.map((e, index) => {
                 return (
-                    <div className="row">
+                    <div className="row" key={index}>
                         <label className="col-12">
                             {e.label}
                         </label>
@@ -32,4 +34,4 @@ function ParameterSelector({ parameters, setParameters, options }) {
     )
 }
 
-export default ParameterSelector;
+export default Dropdown;

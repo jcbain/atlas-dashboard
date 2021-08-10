@@ -8,7 +8,14 @@ const PostObject = (path, params) => ({
     params: params
 });
 
+const ReduxObject = (name, value, tab) => ({
+    name: name,
+    value: value,
+    tab: tab
+});
+
 export {
     SelectObject,
-    PostObject
+    PostObject,
+    ReduxObject
 }

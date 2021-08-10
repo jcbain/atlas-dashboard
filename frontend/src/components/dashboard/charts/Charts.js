@@ -1,48 +1,61 @@
-import api from '../../../api'
-import { useQuery } from "react-query"
-import { useState, useEffect } from 'react';
-import { Table } from 'react-bootstrap'
+import { Parameters } from "../parameters";
+import { GenomeChart, LineChart, HistogramChart } from '.';
 
-const Charts = ({ query }) => {
-    const { data, status, refetch } = useQuery('visuals', () => api.fetch('/dashboard/data', query));
-    const [ visuals, setVisuals] = useState([]);
-
-    useEffect(() => {
-        if(data) {
-            setVisuals(data);
-        }
-        refetch();
-    }, [data, query]);
+//Chart wrapper
+const Charts = ({ state, updateTab }) => {
+    const isStatic = state.isStatic;
 
     return (
-        <div className="border rounded p-5 col-12">
-            { visuals && status==="success" ?
-                <Table>
-                    <thead>
-                        <tr>
-                            <th scope="col">x</th>
-                            <th scope="col">y</th>
-                            <th scope="col">color</th>
-                        </tr>
-                    </thead>
+        state && 
+        <div className="row border rounded p-2">
+            <div className="col-md-12 mb-2">
+                <div className="row p-2">
+                    <GenomeChart state={state} />
 
-                    <tbody>
-                        { visuals.map((e) => {
-                            return (
-                                <tr>
-                                    <td>{e.x}</td>
-                                    <td>{e.y}</td>
-                                    <td>{e.color}</td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </Table>
-            :
-                <h1>Loading...</h1>
-            }
+                    <div className="col-md-3">
+                        { isStatic &&
+                            <Parameters
+                                state={state}
+                                updateTab={updateTab}
+                                paramName={'genome'}
+                            />
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+            <div className="col-md-6">
+                <HistogramChart state={state} />
+
+                { isStatic &&
+                    <div className="col-md-3">
+                        <Parameters
+                            state={state}
+                            updateTab={updateTab}
+                            paramName={'histo'}
+                        />
+                    </div>
+                }
+            </div>
+
+            <div className="col-md-6">
+                <LineChart state={state} />
+
+                { isStatic &&
+                    <div className="col-md-3">
+                        <Parameters
+                            state={state}
+                            updateTab={updateTab}
+                            paramName={'line'}
+                        />
+                    </div>
+                }
+            </div>
+
+
         </div>
     )
 }
 
-export default Charts;
+export { Charts };

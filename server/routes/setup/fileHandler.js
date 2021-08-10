@@ -38,14 +38,15 @@ const dumpCSV = async () => {
             .pipe(csv())
             .on('data', (data) => results.push(data))
             .on('end', () => {
-                Object.keys(results[0]).forEach((column) => {
+                let header = Object.keys(results[0])
+                header.forEach((column) => {
                     pool.query(
                         `ALTER TABLE raw_data
                         ADD COLUMN IF NOT EXISTS
                         ${column} double precision`
                     )
                 });
-                pool.query(`COPY raw_data FROM '${file}' DELIMITER ',' CSV HEADER;`);
+                pool.query(`COPY raw_data (${header.join()}) FROM '${file}' DELIMITER ',' CSV HEADER;`);
         });
     });
 }

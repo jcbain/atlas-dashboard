@@ -91,7 +91,7 @@ function FileUpload({ mutation }) {
 					</Accordion.Collapse>
 				</Card>
 			</Accordion>
-			
+
 			<input
 				className="button mt-3 mr-3"
 				type="submit"
