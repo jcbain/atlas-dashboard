@@ -21,7 +21,6 @@ const VariableSelect = ({ data, handleHist }) => {
     useEffect(() => {
         if(data) {
             setVariables( data.map((e) => {
-                console.log(e.column_name);
                 return SelectObject(e.column_name, "parameter")
             }));
         }
@@ -72,7 +71,11 @@ const VariableSelect = ({ data, handleHist }) => {
                     }))
                 }
 
-                { mutation.isLoading && <h1>creating parameters...</h1> }
+            { mutation.isLoading &&
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Uploading file(s)...</span>
+                </div>
+            }
 
             </div>
 

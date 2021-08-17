@@ -11,7 +11,7 @@ const Axes = ({ axes, dimensions, addBrush, selection, setSelection }) => {
     let yAxisLabel= <TickText
                         fontSize={17}
                         textAnchor="start"
-                        transform={`translate(4, ${dimensions.height/2}) rotate(90)`}
+                        transform={`translate(2, ${dimensions.height/2}) rotate(90)`}
                     >
                         { variables.y }
                     </TickText>
@@ -19,7 +19,7 @@ const Axes = ({ axes, dimensions, addBrush, selection, setSelection }) => {
     let xAxisLabel= <TickText
                         fontSize={17}
                         textAnchor="start"
-                        transform={`translate(${(dimensions.width/2)-margin}, ${dimensions.height + margin/2})`}
+                        transform={`translate(${(dimensions.width/2)-margin}, ${dimensions.height + margin/2 + 15})`}
                     >
                         { variables.x }
                     </TickText>
@@ -33,7 +33,7 @@ const Axes = ({ axes, dimensions, addBrush, selection, setSelection }) => {
         .range([dimensions.height, margin]);
 
     return (
-        <svg width="100%" height="100%" style={{position: 'relative'}}>
+        <svg width="100%" height="100%" style={{ position: 'relative', overflow: 'visible' }}>
             <YAxis
                 yScale={yScale}
                 margin={margin}

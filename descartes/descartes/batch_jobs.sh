@@ -18,4 +18,3 @@
   echo "No data generated from descartes."
 }
 
-echo "Descartes process completed."

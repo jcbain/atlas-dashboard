@@ -8,7 +8,7 @@ const GenomeChart = ({ state }) => {
     const [ selection, setSelection ] = useState();
     
     return (
-        <div className={`p-3 border rounded ${ isStatic ? 'col-md-9' : 'col-md-12'}`}>
+        <div className={`p-3 pb-5 border rounded ${ isStatic ? 'col-md-9' : 'col-md-12'}`}>
             <PlotGenome
                 addBrush={false}
                 chartData={chartData}

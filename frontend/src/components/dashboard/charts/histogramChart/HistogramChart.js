@@ -24,7 +24,7 @@ const HistogramChart = ({ state }) => {
     }, [chartData, slider]);
 
     return (
-        <div className={`h-100 p-3 border rounded ${ isStatic ? 'col-md-9' : 'col-md-12'}`}>
+        <div className={`h-100 p-3 pb-5 border rounded ${ isStatic ? 'col-md-9' : 'col-md-12'}`}>
             { histoData && <PlotBars
                 chartData={histoData}
                 selection={selection}
