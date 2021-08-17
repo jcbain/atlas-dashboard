@@ -1,6 +1,7 @@
 import Select from 'react-select'
 import { useState, useEffect } from "react";
 import { useMutation } from "react-query"
+import styled from "styled-components";
 
 import { post, SelectObject, PostObject } from '../../utils'
 
@@ -49,24 +50,23 @@ const VariableSelect = ({ data, handleHist }) => {
     }
 
     return (
-        <div className="border rounded p-5 mb-5">
-            <h3 className="text-center mb-5"> Variables </h3>
-            <div className="mt-5 row">
+        <VariableSelectContainer>
+            <VariableSelectTitle> Variables </VariableSelectTitle>
+            <VariableSelectWrapper>
                 { !mutation.isLoading && variables && 
                     ( variables.map((e, index) => {
                         return (
-                            <label className="col-12">
+                            <LabelStyle>
                                 {e.label}
 
-                                <Select
-                                    className="mb-3 col-6"
+                                <SelectStyle
                                     placeholder={e.value}
                                     options={options}
                                     onChange={(event) => {
                                         onSelect(event, index)
                                     }}
                                 />
-                            </label>
+                            </LabelStyle>
                         );
                     }))
                 }
@@ -77,12 +77,47 @@ const VariableSelect = ({ data, handleHist }) => {
                 </div>
             }
 
-            </div>
+            </VariableSelectWrapper>
 
-            <input className="button mt-3 mr-3" type="submit" value="Back" onClick={()=>handleHist('/setup?step=1')}/>
-            <input className="button mt-3" type="submit" onClick={onNext} value="Query"/>
-        </div>
+            <StyledInputButton type="submit" value="Back" onClick={()=>handleHist('/setup?step=1')}/>
+            <StyledInputButton type="submit" onClick={onNext} value="Query"/>
+        </VariableSelectContainer>
     )
 }
 
 export default VariableSelect;
+
+const VariableSelectContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    min-width: 768px;
+    align-items: center;
+    justify-items: center;
+    border: 1px solid #000000;
+    border-radius: 1rem;
+    padding: 2rem;
+`
+
+const VariableSelectWrapper = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+`
+
+const LabelStyle = styled.label`
+    text-align: center;
+`
+
+const SelectStyle = styled(Select)`
+    width: 10rem;
+`
+
+const VariableSelectTitle = styled.h3`
+    text-align: center;
+`
+const StyledInputButton = styled.input`
+    width: 100%;
+    height: 2rem;
+    max-width: 10rem;
+`
