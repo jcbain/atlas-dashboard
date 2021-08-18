@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useChartData } from '../../../../hooks';
 import PlotLine from './PlotLine';
+import styled from 'styled-components';
 
 const LineChart = ({ state }) => {
     const isStatic = state.isStatic;
@@ -8,7 +9,7 @@ const LineChart = ({ state }) => {
     const [ selection, setSelection ] = useState();
     
     return (
-        <div className={`h-100 p-3 pb-5 border rounded ${ isStatic ? 'col-md-9' : 'col-md-12'}`}>
+        <LineChartWrapper isStatic={isStatic}>
             <PlotLine
                 addBrush={false}
                 chartData={chartData}
@@ -22,8 +23,16 @@ const LineChart = ({ state }) => {
                 selection={selection}
                 setSelection={setSelection}
             />
-        </div> 
+        </LineChartWrapper> 
     )
 }
 
 export { LineChart };
+
+const LineChartWrapper = styled.div`
+    padding: 0.75rem 0.75rem 1.25rem 0.75rem;
+    border-width: 1px;
+    border-radius: 0.25rem;
+    grid-column: span 2 / span 2;
+    grid-row: ${props => props.isStatic ? 'span 2 /span 2' : 'span 1 / span 1'};
+`

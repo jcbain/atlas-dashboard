@@ -8,6 +8,10 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         font-family: 'Quicksand', sans-serif;
     }
+
+    @media (min-width: 1280px) {
+        grid-column: span 12 / span 12;
+    }
 `
 
 export default GlobalStyle;

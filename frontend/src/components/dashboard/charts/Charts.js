@@ -10,47 +10,47 @@ const Charts = ({ state, updateTab }) => {
         state && 
         <ChartsWrapper>
             <GenomeContainer>
-                <GenomeChart state={state} />
-
-                <div className="col-md-3">
-                    { isStatic &&
-                        <Parameters
-                            state={state}
-                            updateTab={updateTab}
-                            paramName={'genome'}
-                        />
-                    }
-                </div>
+                <GenomeView isStatic={isStatic}>
+                    <StaticParam>
+                        { isStatic &&
+                            <Parameters
+                                state={state}
+                                updateTab={updateTab}
+                                paramName={'genome'}
+                            />
+                        }
+                    </StaticParam>
+                    <GenomeChart state={state} />
+                </GenomeView>
             </GenomeContainer>
-            <HistoContainer>
-                <HistogramChart state={state} />
-
-                { isStatic &&
-                    <div className="col-md-3">
-                        <Parameters
-                            state={state}
-                            updateTab={updateTab}
-                            paramName={'histo'}
-                        />
-                    </div>
-                }
-            </HistoContainer>
-
-            <LineContainer>
-                <LineChart state={state} />
-
-                { isStatic &&
-                    <div className="col-md-3">
-                        <Parameters
-                            state={state}
-                            updateTab={updateTab}
-                            paramName={'line'}
-                        />
-                    </div>
-                }
-            </LineContainer>
-
-
+            <ChartContainer>
+                <ChartView isStatic={isStatic}>
+                    <StaticParam>
+                        { isStatic &&
+                                <Parameters
+                                    state={state}
+                                    updateTab={updateTab}
+                                    paramName={'histo'}
+                                />
+                        }
+                    </StaticParam>
+                    <HistogramChart state={state} />
+                </ChartView>
+            </ChartContainer>
+            <ChartContainer>
+                <ChartView isStatic={isStatic}>
+                    <StaticParam>
+                        { isStatic &&
+                                <Parameters
+                                    state={state}
+                                    updateTab={updateTab}
+                                    paramName={'line'}
+                                />
+                        }
+                    </StaticParam>
+                    <LineChart state={state} />
+                </ChartView>
+            </ChartContainer>
         </ChartsWrapper>
     )
 }
@@ -63,41 +63,26 @@ const ChartsWrapper = styled.div`
     gap: 1.5rem;
 `
 const ChartContainer = styled.div`
-    flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
+    grid-column: 1 / -1;
+    @media (min-width: 1280px) {
+        grid-column: span 6 / span 6;
+    }
+`
+const ChartView = styled.div`
+    display: grid;
+    grid-template-rows: ${props => props.isStatic ? '15% 1fr' : 'repeat(1, minmax(0, 1fr))'};
 `
 const GenomeContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
     grid-column: 1 / -1;
-    @media (min-width: 1280px) {
-        grid-column: span 12 / span 12;
-    }
 `
-const HistoContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    grid-column: 1 / -1;
-
-    @media (min-width: 640px) {
-        grid-column: span 12 / span 12;
-    }
-
-    @media (min-width: 1280px) {
-        grid-column: span 6 / span 6;
-    }
+const StaticParam = styled.div`
+    grid-column: span 2 / span 2;
 `
-const LineContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    grid-column: 1 / -1;
-
-    @media (min-width: 640px) {
-        grid-column: span 12 / span 12;
-    }
-
-    @media (min-width: 1280px) {
-        grid-column: span 6 / span 6;
-    }
+const GenomeView = styled.div`
+    display: grid;
+    grid-template-rows: ${props => props.isStatic ? '15% 1fr' : 'repeat(1, minmax(0, 1fr))'};
 `

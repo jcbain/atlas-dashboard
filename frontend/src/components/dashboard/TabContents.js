@@ -31,7 +31,6 @@ const TabContents = ({ state, updateTab }) => {
                     />
                 }
             </ParamContainer>
-            
         </DashboardWrapper>
     )
 }

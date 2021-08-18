@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import PlotBars from './PlotBars';
 import HistoSlider from "./HistoSlider"
 import * as d3 from 'd3';
+import styled from 'styled-components';
 
 const HistogramChart = ({ state }) => {
     const isStatic = state.isStatic;
@@ -24,7 +25,7 @@ const HistogramChart = ({ state }) => {
     }, [chartData, slider]);
 
     return (
-        <div className={`h-100 p-3 pb-5 border rounded ${ isStatic ? 'col-md-9' : 'col-md-12'}`}>
+        <HistoChartWrapper isStatic={isStatic}>
             { histoData && <PlotBars
                 chartData={histoData}
                 selection={selection}
@@ -37,8 +38,16 @@ const HistogramChart = ({ state }) => {
                 slider={slider}
                 setSlider={setSlider}
             />
-        </div>
+        </HistoChartWrapper>
     )
 }
 
 export { HistogramChart };
+
+const HistoChartWrapper = styled.div`
+    padding: 0.75rem 0.75rem 1.25rem 0.75rem;
+    border-width: 1px;
+    border-radius: 0.25rem;
+    grid-column: span 2 / span 2;
+    grid-row: ${props => props.isStatic ? 'span 2 /span 2' : 'span 1 / span 1'};
+`

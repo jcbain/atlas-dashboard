@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useChartData } from '../../../../hooks';
 import PlotGenome from './PlotGenome';
+import styled from 'styled-components';
 
 const GenomeChart = ({ state }) => {
     const isStatic = state.isStatic;
@@ -8,7 +9,7 @@ const GenomeChart = ({ state }) => {
     const [ selection, setSelection ] = useState();
     
     return (
-        <div className={`p-3 pb-5 border rounded ${ isStatic ? 'col-md-9' : 'col-md-12'}`}>
+        <GenomeChartWrapper isStatic={isStatic}>
             <PlotGenome
                 addBrush={false}
                 chartData={chartData}
@@ -22,8 +23,16 @@ const GenomeChart = ({ state }) => {
                 selection={selection}
                 setSelection={setSelection}
             />
-        </div> 
+        </GenomeChartWrapper> 
     )
 }
 
 export { GenomeChart };
+
+const GenomeChartWrapper = styled.div`
+    padding: 0.75rem 0.75rem 1.25rem 0.75rem;
+    border-width: 1px;
+    border-radius: 0.25rem;
+    grid-column: span 2 / span 2;
+    grid-row: ${props => props.isStatic ? 'span 2 /span 2' : 'span 1 / span 1'};
+`
