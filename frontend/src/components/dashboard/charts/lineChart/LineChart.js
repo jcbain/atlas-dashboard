@@ -30,7 +30,7 @@ const LineChart = ({ state }) => {
 export { LineChart };
 
 const LineChartWrapper = styled.div`
-    padding: 0.75rem 0.75rem 1.25rem 0.75rem;
+    padding: 0.75rem 0.75rem 2rem 0.75rem;
     border-width: 1px;
     border-radius: 0.25rem;
     grid-column: span 2 / span 2;

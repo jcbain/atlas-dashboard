@@ -38,10 +38,13 @@ function Dropdown({ parameters, setParameters, state }) {
 export default Dropdown;
 
 const Header = styled.h3`
-    margin-bottom: 3rem;
+    text-align: center;
+    border-width: 1px;
+    font-weight: bold;
+    color: ${props => props.theme.paramHeaderColor};
 `
 const ParamWrapper = styled.div`
-    text-align: center;
+    text-align: left;
     align-items: center;
     justify-content: center;
     flex-grow: 1;
@@ -49,7 +52,9 @@ const ParamWrapper = styled.div`
 const Label = styled.label`
     font-size: 0.75rem;
     font-weight: bold;
+    margin: 0.75rem;
 `
 const Selection = styled(Select)`
-    margin: 0 1rem 0 0;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
 `

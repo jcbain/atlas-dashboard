@@ -1,3 +1,5 @@
+export const SWITCH_THEME = "SWITCH_THEME"
+
 export const updateTab = (name, value, tab) => {
     return (dispatch) => {
         dispatch({
@@ -17,6 +19,15 @@ export const switchTab = (tab) => {
             payload:{
                 tab: tab
             }
+        })
+    }
+}
+
+export const switchTheme = (theme) => {
+    return (dispatch) => {
+        dispatch({
+            type: SWITCH_THEME,
+            theme: theme,
         })
     }
 }

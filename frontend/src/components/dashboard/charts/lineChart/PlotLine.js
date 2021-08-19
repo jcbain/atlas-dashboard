@@ -32,7 +32,7 @@ const PlotLine = ({ addBrush, chartData, selection, setSelection }) => {
             context.lineWidth = 4;
 
             if(((next.x >= selection[0])) && (curr.x <= selection[1])) {
-                context.strokeStyle = "#800080";
+                context.strokeStyle = "#682CFE";
                 context.lineWidth = 2;
             }
 

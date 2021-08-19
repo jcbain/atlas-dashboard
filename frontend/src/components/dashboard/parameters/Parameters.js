@@ -5,13 +5,14 @@ import styled from 'styled-components';
 
 const Parameters = ({ state, updateTab, paramName }) => {
     const { parameters, setParameters }  = useParameters(state, paramName);
+    const isStatic = state.isStatic;
 
     useEffect(() => {
         updateTab(paramName, parameters);
     }, [parameters]);
 
     return (
-        <ParametersWrapper>
+        <ParametersWrapper isStatic={isStatic}>
             <Dropdown
                 parameters={parameters}
                 setParameters={setParameters}
@@ -24,8 +25,7 @@ export { Parameters }
 
 const ParametersWrapper = styled.div`
     display: flex;
-    flex-direction: row;
-    border-width: 1px;
-    border-radius: 0.25rem;
-    padding: 1rem;
+    flex-direction: ${props => props.isStatic ? 'row' : 'column'};
+    border-bottom: ${props => props.isStatic  ? 'thick'  : '0px'} double ${props => props.theme.chartCardOutline};
+    padding-bottom: 1rem;
 `
