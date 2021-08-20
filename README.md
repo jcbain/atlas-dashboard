@@ -1,7 +1,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <h3 align="center">Atlas of Population Genetics</h3>
+  <h1 align="center">Atlas of Population Genetics</h1>
 
   <p align="center">
     An application for presenting evolutionary phenomena using visualizations and animations.
