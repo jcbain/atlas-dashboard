@@ -126,7 +126,6 @@ Project Link: [https://github.com/jcbain/atlas-dashboard](https://github.com/you
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
-* [Img Shields](https://shields.io)
 * [Styled Components](https://styled-components.com/)
 * [Font Awesome](https://fontawesome.com)
 
