@@ -13,7 +13,7 @@
     An application for presenting evolutionary phenomena using visualizations and animations.
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="#">View Demo</a>
     ·
     <a href="https://github.com/jcbain/popgen-atlas/issues">Report Bug</a>
     ·
