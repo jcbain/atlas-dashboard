@@ -64,9 +64,6 @@ const Dashboard = () => {
                     }
                 </Tabs>
             }
-            
-            <div onClick={()=>handleAddTab()}>+</div>
-
         </div>
     )
 }
