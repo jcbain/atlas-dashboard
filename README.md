@@ -87,7 +87,7 @@ If you are using **Windows OS** then you need to install git:
     ```sh
     sh ./docker.sh
     ```
-  * For Windows you need to use the gitbash terminal
+    * For Windows you need to use the gitbash terminal
     ```sh
     sh ./docker.sh
     ```
