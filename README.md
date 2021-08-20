@@ -72,10 +72,8 @@ You need to install docker in your local machine:
   <br/>
   [Getting started with Docker](https://docs.docker.com/get-docker/)
   
-**WINDOWS ONLY** 
-  * If you are using **Windows OS** then you need to install git:
-  <br/>
-  [Getting started with git](https://git-scm.com/downloads)
+If you are using **Windows OS** then you need to install git:
+[Getting started with git](https://git-scm.com/downloads)
 
 ### Installation
 
