@@ -4,19 +4,19 @@ import { Route, Switch } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from "react-query";
 import styled, { ThemeProvider } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { switchTheme } from './state/actions/actions';
-import { lightTheme } from './themes/LightTheme.theme';
+// import { switchTheme } from './state/actions/actions';
+// import { lightTheme } from './themes/LightTheme.theme';
 
 function App() {
 	const queryClient = new QueryClient();
 	const theme = useSelector((state) => state.themeReducer.theme)
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 
 	return (
 		<ThemeProvider theme={theme}>
 			<Wrapper>
 				<ContentArea>
-					<button onClick={() => dispatch(switchTheme(lightTheme))}>Light Theme</button>
+					{/* <button onClick={() => dispatch(switchTheme(lightTheme))}>Light Theme</button> */}
 					<PagesContainer>
 						<QueryClientProvider client={queryClient}>
 							<Switch>

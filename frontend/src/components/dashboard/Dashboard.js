@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import { actions } from "../../state"
 import { Tabs, Tab } from 'react-bootstrap'
 import TabContents from "./TabContents";
+import styled from "styled-components";
 
 const Dashboard = () => {
     // Current tab index and it's state
@@ -43,12 +44,12 @@ const Dashboard = () => {
     };
     
     return (
-        <div>
+        <>
+            <AddButton onClick={()=>handleAddTab()}>+</AddButton>
             { storage && 
-                <Tabs
+                <TabsContainer
                     activeKey={ activeTab }
                     onSelect={(tab) => setActiveTab(tab)}
-                    className="mb-3"
                 >
                     { 
                         storage.map((tab, index) => {
@@ -62,10 +63,28 @@ const Dashboard = () => {
                             )}
                         )
                     }
-                </Tabs>
+                </TabsContainer>
             }
-        </div>
+        </>
     )
 }
 
 export default Dashboard;
+
+const AddButton = styled.button`
+    background-color: ${props => props.theme.paramCardBackground};
+    border-width: 2px;
+    border-radius: 0.30rem;
+    border-style: solid;
+    border-color: ${props => props.theme.paramHeaderColor};
+    border-radius: 0.30rem;
+    color: ${props => props.theme.tabFontColor};
+    margin-bottom: 1rem;
+    padding: 0.25rem 0.75rem;
+`
+
+const TabsContainer = styled(Tabs)`
+    margin-bottom: 1rem;
+    color: ${props => props.theme.tabFontColor};
+    border-bottom: 2px solid ${props => props.theme.chartCardOutline};
+`

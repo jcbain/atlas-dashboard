@@ -1,12 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-    @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
     * {
         box-sizing: border-box;
         margin: 0; 
         padding: 0;
-        font-family: 'Quicksand', sans-serif;
+        font-family: 'Roboto', sans-serif;
     }
 
     @media (min-width: 1280px) {

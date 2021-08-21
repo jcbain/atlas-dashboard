@@ -2,6 +2,7 @@ import Select from 'react-select'
 import { useState, useEffect } from "react";
 import { useMutation } from "react-query"
 import styled from "styled-components";
+import * as Style from "../../styles/SetupStyles.styles";
 
 import { post, SelectObject, PostObject } from '../../utils'
 
@@ -51,7 +52,7 @@ const VariableSelect = ({ data, handleHist }) => {
 
     return (
         <VariableSelectContainer>
-            <VariableSelectTitle> Variables </VariableSelectTitle>
+            <Style.SetupTitle> Variables </Style.SetupTitle>
             <VariableSelectWrapper>
                 { !mutation.isLoading && variables && 
                     ( variables.map((e, index) => {
@@ -79,8 +80,8 @@ const VariableSelect = ({ data, handleHist }) => {
 
             </VariableSelectWrapper>
 
-            <StyledInputButton type="submit" value="Back" onClick={()=>handleHist('/setup?step=1')}/>
-            <StyledInputButton type="submit" onClick={onNext} value="Query"/>
+            <Style.StyledInputButton type="submit" value="Back" onClick={()=>handleHist('/setup?step=1')}/>
+            <Style.StyledInputButton type="submit" onClick={onNext} value="Query"/>
         </VariableSelectContainer>
     )
 }
@@ -94,7 +95,8 @@ const VariableSelectContainer = styled.div`
     min-width: 768px;
     align-items: center;
     justify-items: center;
-    border: 1px solid #000000;
+    border: 1px solid ${props => props.theme.chartCardOutline};
+    background-color: ${props => props.theme.chartCardBackground};
     border-radius: 1rem;
     padding: 2rem;
 `
@@ -111,13 +113,4 @@ const LabelStyle = styled.label`
 
 const SelectStyle = styled(Select)`
     width: 10rem;
-`
-
-const VariableSelectTitle = styled.h3`
-    text-align: center;
-`
-const StyledInputButton = styled.input`
-    width: 100%;
-    height: 2rem;
-    max-width: 10rem;
 `

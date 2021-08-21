@@ -4,6 +4,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 import FileUpload from './FileUpload';
 import VariableSelect from './VariableSelect';
 import { fetch, post, PostObject } from '../../utils'
+import styled from "styled-components";
+import * as Style from "../../styles/SetupStyles.styles";
+import ProgressBar from "./progressbar/ProgressBar";
 
 const Setup = () => {
     const history = useHistory();
@@ -36,46 +39,42 @@ const Setup = () => {
     );
 
     return (
-        <div className="container">
+        <>
             { step===0 &&
-                <div className="row text-center">
-                    <div className="col-md-5 m-2 border rounded p-5">
-                        <h5> Use default data </h5>
+                <StepZeroWrapper>
+                    <Style.SetupTitle>Default or Upload</Style.SetupTitle>
+                    <DataContainer>
+                        <SubTitle> Use default data </SubTitle>
                         
                         <p> Continue to the data visualizer with the default
                             data and variables set. </p>
 
-                        <button
+                        <DefaultButton
                             type="button"
-                            className="btn btn-warning float-end"
                             onClick={() => {
                                 refetch();
                                 handleHist('/setup?step=2')
                             }}
-                        > Continue to datavis </button>
-                    </div>
-
-                    <div className="col-md-5 m-2 border rounded p-5">
-                        <h5> Upload files </h5>
+                        > Continue to datavis </DefaultButton>
+                    </DataContainer>
+                    <DataContainer>
+                        <SubTitle> Upload files </SubTitle>
 
                         <p> Upload your own csv file / slim and parameters
                             file and select the variables to be visualized.</p>
 
-                        <button
+                        <UploadButton
                             type="button"
-                            className="btn btn-info"
                             onClick={()=>{handleHist('/setup?step=1')}}
-                        > Continue to upload </button>
-                    </div>
-                </div>
+                        > Continue to upload </UploadButton>
+                    </DataContainer>
+                </StepZeroWrapper>
             }
 
             { step===1 && !mutation.isLoading && <FileUpload mutation={mutation} /> }
             
             { step===1 && mutation.isLoading && 
-                <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
+                <ProgressBar/>
             }    
 
             { step===2 &&
@@ -88,8 +87,45 @@ const Setup = () => {
                     <h1>generating data...</h1>
                 )
             }
-        </div>
+        </>
     )
 }
 
 export default Setup;
+
+const StepZeroWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+const DataContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    border: 1px solid ${props => props.theme.chartCardOutline};
+    background-color: ${props => props.theme.chartCardBackground};
+    border-radius: 1rem;
+    padding: 3rem;
+    margin: 1rem;
+    max-width: 30rem;
+`
+
+const SubTitle = styled.h4`
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: 1rem;
+`
+
+const DefaultButton = styled.button`
+    border: none;
+    background-color: #F0AD4E;
+    padding: 0.5rem;
+    color: white;
+`
+
+const UploadButton = styled.button`
+    border: none;
+    background-color: #169CB1;
+    padding: 0.5rem;
+    color: white;
+`
