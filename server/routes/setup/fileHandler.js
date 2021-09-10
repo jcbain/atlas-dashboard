@@ -31,23 +31,30 @@ const saveFiles = (files) => {
 
 const dumpCSV = async () => {
     const csvFiles = await getCsv(root);
-    const results = [];
 
     csvFiles.forEach((file) => {
-        fs.createReadStream(file)
-            .pipe(csv())
-            .on('data', (data) => results.push(data))
-            .on('end', () => {
-                Object.keys(results[0]).forEach((column) => {
-                    pool.query(
-                        `ALTER TABLE raw_data
-                        ADD COLUMN IF NOT EXISTS
-                        ${column} double precision`
-                    )
-                });
-                pool.query(`COPY raw_data FROM '${file}' DELIMITER ',' CSV HEADER;`);
-        });
+        csvToTable(file);
     });
+}
+
+async function csvToTable(file) {
+    const results = [];
+
+    fs.createReadStream(file)
+        .pipe(csv())
+        .on('data', (data) => results.push(data))
+        .on('end', () => {
+            let header = Object.keys(results[0]);
+
+            header.forEach((column) => {
+                pool.query(
+                    `ALTER TABLE raw_data
+                    ADD COLUMN IF NOT EXISTS
+                    ${column} double precision`
+                )
+            });
+            pool.query(`COPY raw_data (${header.join()}) FROM '${file}' DELIMITER ',' CSV HEADER;`);
+        });
 }
 
 async function getCsv(path) {
@@ -56,7 +63,6 @@ async function getCsv(path) {
 
     for (const item of items) {
         const newPath = `${path}${item.name}`
-
         if (item.isDirectory()) {
             csvFiles = csvFiles.concat(
                     await getCsv(`${newPath}/`)
@@ -70,4 +76,4 @@ async function getCsv(path) {
     return csvFiles;
 }
 
-module.exports = { saveFiles, dumpCSV }
+module.exports = { saveFiles, dumpCSV, csvToTable }

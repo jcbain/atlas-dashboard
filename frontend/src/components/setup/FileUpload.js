@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Accordion, Card, Button } from 'react-bootstrap'
+import styled from 'styled-components';
+import * as Style from "../../styles/SetupStyles.styles";
 
 var FormData = require('form-data')
 
@@ -40,7 +42,8 @@ function FileUpload({ mutation }) {
 	}
 
 	return (
-		<form onSubmit={onSubmit}>
+		<UploadDataWrapper onSubmit={onSubmit}>
+			<Style.SetupTitle> Upload Data </Style.SetupTitle>
 			<Accordion>
 				<Card>
 					<Card.Header>
@@ -91,14 +94,20 @@ function FileUpload({ mutation }) {
 					</Accordion.Collapse>
 				</Card>
 			</Accordion>
-			
-			<input
-				className="button mt-3 mr-3"
+
+			<Style.StyledInputButton
 				type="submit"
 				value="Upload"
 				disabled={!invalidFile}/>
-		</form>
+		</UploadDataWrapper>
 	)
 }
 
 export default FileUpload;
+
+const UploadDataWrapper = styled.form`
+    border: 1px solid ${props => props.theme.chartCardOutline};
+    background-color: ${props => props.theme.chartCardBackground};
+    border-radius: 1rem;
+    padding: 2rem;
+`

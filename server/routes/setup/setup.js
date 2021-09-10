@@ -13,19 +13,15 @@ const options = {
 router
     .route("/upload")
     .post(async(req, res) => {
-        let isCSV = saveFiles(req.files);
+        saveFiles(req.files);
 
-        if (!isCSV) {
-            dockerCommand('exec descartes ./start.sh', options)
+        dockerCommand('exec descartes ./start.sh', options)
             .then(()=> {
+                pool.query(`TRUNCATE TABLE raw_data;`);
                 dumpCSV().then(res.end());
             }).catch((error) => {
                 console.log(error);
             });
-
-        } else {
-            dumpCSV().then(res.end());
-        }
     }
 );
 
@@ -55,17 +51,23 @@ router
                 ADD COLUMN IF NOT EXISTS ${col} double precision;`)
         })
 
-        await pool.query(
+        pool.query(
             `INSERT INTO selection (${params.toString()})
             SELECT DISTINCT ${params.toString()}
-            FROM raw_data;`)
+            FROM raw_data;`
 
-        pool.query(
-            `INSERT INTO visual (param_id, x, y, color)
-            SELECT S.id, ${visuals.x}, ${visuals.y}, ${visuals.color}
-            FROM raw_data R, selection S
-            WHERE ${queryState.join(' AND ')};`
-        ).then(() => res.end() )
+        ).then(() => 
+            pool.query(
+                `INSERT INTO visual (param_id, x, y, color)
+                SELECT S.id, ${visuals.x}, ${visuals.y}, ${visuals.color}
+                FROM raw_data R, selection S
+                WHERE ${queryState.join(' AND ')};`
+                
+            ).then(() => res.end() )
+
+        ).catch(error => {
+            console.log(error);
+        });
     }
 );
 

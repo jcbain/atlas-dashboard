@@ -20,7 +20,7 @@ router
         let qstring = req.query.filter;
         
         await pool.query(
-            `SELECT * FROM visual
+            `SELECT x, y, color FROM visual
             WHERE param_id=
             (SELECT id FROM selection
             WHERE ${qstring});`)
