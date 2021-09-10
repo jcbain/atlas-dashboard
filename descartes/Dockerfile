@@ -46,11 +46,6 @@ WORKDIR /usr/src
 # convert batch_jobs.sh dos format to unix
 RUN dos2unix *
 RUN chmod +x start.sh
-# CMD ["/bin/sh", "./start.sh"]
-# CMD ["/bin/sh"]
-CMD ["/bin/bash", "-ec", "sleep 1000"]
 
-# meta
-LABEL version="0.1"
-LABEL maintainer="James Bain"
-LABEL email="jamescbain@gmail.com"
+ENTRYPOINT ["tail"]
+CMD ["-f","/dev/null"]
