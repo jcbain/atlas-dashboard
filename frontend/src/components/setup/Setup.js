@@ -38,6 +38,7 @@ const Setup = () => {
 			onSuccess: () => {
 				// If file uploading and descartes is successful, refetch variables
 				refetch();
+				nextStep();
 			},
 		}
 	);

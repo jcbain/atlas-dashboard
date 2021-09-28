@@ -112,7 +112,6 @@ function FileUpload({ mutation, nextStep, backStep }) {
 					type="submit"
 					value="Upload"
 					disabled={!invalidFile}
-					onClick={nextStep}
 				/>
 				<Style.StyledInputButton
 					type="button"
