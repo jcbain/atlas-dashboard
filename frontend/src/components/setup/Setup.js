@@ -65,7 +65,7 @@ const Setup = () => {
 						backStep={backStep}
 					/>
 				) : (
-					<h1>generating data...</h1>
+					<h1>Visualizing Data...</h1>
 				))}
 		</>
 	);
