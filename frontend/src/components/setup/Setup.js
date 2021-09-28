@@ -14,6 +14,10 @@ const Setup = () => {
 	const nextStep = () => {
 		setStep((cur) => cur + 1);
 	};
+
+	const defaultStep = () => {
+		setStep((cur) => cur + 2);
+	};
 	const backStep = () => {
 		setStep((cur) => cur - 1);
 	};
@@ -40,7 +44,9 @@ const Setup = () => {
 
 	return (
 		<>
-			{step === 0 && <Default nextStep={nextStep} />}
+			{step === 0 && (
+				<Default nextStep={nextStep} defaultStep={defaultStep} />
+			)}
 			{step === 1 && !mutation.isLoading && (
 				<FileUpload
 					mutation={mutation}

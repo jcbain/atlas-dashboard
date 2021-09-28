@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import * as Style from "../../styles/SetupStyles.styles";
 
-const Default = ({ nextStep }) => {
+const Default = ({ nextStep, defaultStep }) => {
 	return (
 		<section>
 			{" "}
@@ -17,7 +17,7 @@ const Default = ({ nextStep }) => {
 						and variables set.{" "}
 					</p>
 
-					<DefaultButton type="button">
+					<DefaultButton type="button" onClick={defaultStep}>
 						{" "}
 						Continue to datavis{" "}
 					</DefaultButton>
