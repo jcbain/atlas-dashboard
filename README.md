@@ -93,7 +93,7 @@ If you are using **Windows OS** then you need to install git:
     ```
 4. Once Docker finishes initializing the web application then browser window should pop up. If nothing pops up then copy/paste this in the browser:
     ```sh
-    http://localhost:3000/setup?step=0
+    http://localhost:3000
     ```
 
 
