@@ -53,9 +53,7 @@ const Dashboard = () => {
 		<>
 			<AddButton onClick={handleAddTab}>+</AddButton>
 
-			<NewUploadButton onClick={handleNewFile}>
-				Upload New File
-			</NewUploadButton>
+			<NewUploadButton onClick={handleNewFile}>Restart</NewUploadButton>
 			{storage && (
 				<TabsContainer
 					activeKey={activeTab}
@@ -107,8 +105,6 @@ const NewUploadButton = styled.button`
 	padding: 0.25rem 0.75rem;
 	float: right;
 `;
-
-const UploadWrapper = styled.div``;
 
 const TabsContainer = styled(Tabs)`
 	margin-bottom: 1rem;

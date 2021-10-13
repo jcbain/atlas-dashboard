@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
@@ -9,9 +9,9 @@ const GlobalStyle = createGlobalStyle`
         font-family: 'Roboto', sans-serif;
     }
 
-    @media (min-width: 1280px) {
+    @media (min-width: 480px) {
         grid-column: span 12 / span 12;
     }
-`
+`;
 
 export default GlobalStyle;
