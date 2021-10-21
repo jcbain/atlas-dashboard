@@ -3,10 +3,15 @@ const SelectObject = (label, value) => ({
 	value: value,
 });
 
-const BaseSelectObject = (label, value, parameters) => ({
+const BaseSelectObject = (label, value, choice) => ({
 	label: label,
 	value: value,
-	parameters: [parameters],
+	link: choice,
+});
+
+const MultiSelectObject = (label, value) => ({
+	label: label,
+	value: value,
 });
 
 const PostObject = (path, params) => ({
@@ -20,4 +25,10 @@ const ReduxObject = (name, value, tab) => ({
 	tab: tab,
 });
 
-export { SelectObject, BaseSelectObject, PostObject, ReduxObject };
+export {
+	SelectObject,
+	BaseSelectObject,
+	MultiSelectObject,
+	PostObject,
+	ReduxObject,
+};

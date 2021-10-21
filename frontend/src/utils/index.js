@@ -4,5 +4,6 @@ export {
 	PostObject,
 	ReduxObject,
 	BaseSelectObject,
+	MultiSelectObject,
 } from "./constants";
 export { generateInitialState, getOptionsToRender } from "./selectUtils";

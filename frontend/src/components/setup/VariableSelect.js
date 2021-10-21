@@ -4,7 +4,13 @@ import { useMutation } from "react-query";
 import styled from "styled-components";
 import * as Style from "../../styles/SetupStyles.styles";
 
-import { post, SelectObject, PostObject } from "../../utils";
+import {
+	post,
+	SelectObject,
+	PostObject,
+	BaseSelectObject,
+	MultiSelectObject,
+} from "../../utils";
 
 const VariableSelect = ({ data, handleHist, backStep }) => {
 	const mutation = useMutation(
@@ -19,39 +25,53 @@ const VariableSelect = ({ data, handleHist, backStep }) => {
 	);
 
 	const [variables, setVariables] = useState();
-	const options = ["x", "y", "color", "ignore"].map((vars) =>
-		SelectObject(vars, vars)
-	);
+	const [chosenVariables, setChosenVariables] = useState();
 
 	useEffect(() => {
 		if (data) {
 			setVariables(
 				data.map((e) => {
-					return SelectObject(e.column_name, "parameter");
+					return BaseSelectObject(
+						e.column_name,
+						e.column_name,
+						"ignore"
+					);
 				})
 			);
 		}
+		setChosenVariables(
+			["x", "y", "color", "parameter"].map((v) => {
+				return MultiSelectObject(v, []);
+			})
+		);
 	}, [data]);
 
 	const onNext = async () => {
 		let tables = { params: [] };
 
-		variables.forEach((v) => {
-			if (v.value === "parameter") {
-				tables.params.push(v.label);
-			} else if (v.value !== "ignore") {
-				tables[v.value] = v.label;
+		chosenVariables.forEach((v) => {
+			if (v.label === "parameter") {
+				tables.params = v.value;
+			} else {
+				tables[v.label] = v.value[0];
 			}
 		});
-
+		console.log(JSON.stringify(tables));
 		sessionStorage.setItem("visuals", JSON.stringify(tables));
 		mutation.mutate(tables);
 	};
 
 	const onSelect = (e, index) => {
-		let n = [...variables];
-		n[index].value = e.label;
-		setVariables(n);
+		let v = [...chosenVariables];
+
+		if (index !== 3) {
+			v[index].value.push(e.value);
+		} else {
+			const flattenedValue = [].concat.apply([], [e]);
+			const unique = [...new Set(flattenedValue.map((val) => val.value))];
+			v[index].value = unique;
+		}
+		setChosenVariables(v);
 	};
 
 	return (
@@ -60,13 +80,23 @@ const VariableSelect = ({ data, handleHist, backStep }) => {
 			<VariableSelectWrapper>
 				{!mutation.isLoading &&
 					variables &&
-					variables.map((e, index) => {
+					chosenVariables.map((e, index) => {
+						const options = variables.filter(
+							(v) => v.label !== e.value
+						);
 						return (
 							<LabelStyle>
 								{e.label}
 
 								<SelectStyle
-									placeholder={e.value}
+									key={index}
+									isMulti={
+										e.label === "parameter" ? true : false
+									}
+									closeMenuOnSelect={
+										e.label === "parameter" ? false : true
+									}
+									placeholder={e.label}
 									options={options}
 									onChange={(event) => {
 										onSelect(event, index);
@@ -114,7 +144,7 @@ const VariableSelectContainer = styled.section`
 
 const VariableSelectWrapper = styled.div`
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(4, 1fr);
 	gap: 2rem;
 `;
 
@@ -123,5 +153,5 @@ const LabelStyle = styled.label`
 `;
 
 const SelectStyle = styled(Select)`
-	width: 10rem;
+	width: 16rem;
 `;
