@@ -6,7 +6,6 @@ import * as Style from "../../styles/SetupStyles.styles";
 
 import {
 	post,
-	SelectObject,
 	PostObject,
 	BaseSelectObject,
 	MultiSelectObject,
@@ -26,6 +25,9 @@ const VariableSelect = ({ data, handleHist, backStep }) => {
 
 	const [variables, setVariables] = useState();
 	const [chosenVariables, setChosenVariables] = useState();
+	const [selectState, setSelectState] = useState(() =>
+		["x", "y", "color", "parameter"].map((item) => null)
+	);
 
 	useEffect(() => {
 		if (data) {
@@ -63,6 +65,8 @@ const VariableSelect = ({ data, handleHist, backStep }) => {
 
 	const onSelect = (e, index) => {
 		let v = [...chosenVariables];
+		const clonedSelectState = JSON.parse(JSON.stringify(selectState));
+		clonedSelectState[index] = e;
 
 		if (index !== 3) {
 			v[index].value.push(e.value);
@@ -71,6 +75,8 @@ const VariableSelect = ({ data, handleHist, backStep }) => {
 			const unique = [...new Set(flattenedValue.map((val) => val.value))];
 			v[index].value = unique;
 		}
+
+		setSelectState(clonedSelectState);
 		setChosenVariables(v);
 	};
 
@@ -80,23 +86,32 @@ const VariableSelect = ({ data, handleHist, backStep }) => {
 			<VariableSelectWrapper>
 				{!mutation.isLoading &&
 					variables &&
-					chosenVariables.map((e, index) => {
-						const options = variables.filter(
-							(v) => v.label !== e.value
+					selectState.map((variable, index) => {
+						const options = getOptionsToRender(
+							selectState,
+							variables
 						);
+
 						return (
 							<LabelStyle>
-								{e.label}
+								{chosenVariables[index].label}
 
 								<SelectStyle
 									key={index}
 									isMulti={
-										e.label === "parameter" ? true : false
+										chosenVariables[index].label ===
+										"parameter"
+											? true
+											: false
 									}
 									closeMenuOnSelect={
-										e.label === "parameter" ? false : true
+										chosenVariables[index].label ===
+										"parameter"
+											? false
+											: true
 									}
-									placeholder={e.label}
+									value={selectState[index]}
+									placeholder={chosenVariables[index].label}
 									options={options}
 									onChange={(event) => {
 										onSelect(event, index);
@@ -128,6 +143,24 @@ const VariableSelect = ({ data, handleHist, backStep }) => {
 };
 
 export default VariableSelect;
+
+const getOptionsToRender = (allSelectedOptions, variables) => {
+	const filteredOptions = allSelectedOptions.flatMap((options) => options);
+
+	const optionsToRender =
+		filteredOptions.length > 0
+			? variables.filter(
+					(option) =>
+						!filteredOptions.some(
+							(selectOption) =>
+								option &&
+								selectOption &&
+								option.value === selectOption.value
+						)
+			  )
+			: variables;
+	return optionsToRender;
+};
 
 const VariableSelectContainer = styled.section`
 	display: grid;
