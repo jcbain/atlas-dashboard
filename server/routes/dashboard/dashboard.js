@@ -5,7 +5,7 @@ const pool = require('../../db');
 router
     .route("/parameters")
     .get(async (req, res) => {
-        await pool.query(`SELECT * FROM selection;`)
+        await pool.query(`SELECT * FROM selection`)
             .then((data) => {
                 res.json(data.rows);
             }).catch(error => {
